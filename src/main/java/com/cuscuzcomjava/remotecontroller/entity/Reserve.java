@@ -1,7 +1,5 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
-import jdk.jfr.Enabled;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
