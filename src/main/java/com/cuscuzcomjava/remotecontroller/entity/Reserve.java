@@ -4,6 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import com.sun.istack.NotNull;
+
+import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
@@ -11,13 +14,15 @@ public class Reserve {
 
     @Id
     @GeneratedValue
-    @Column(name = "CL_ID")
+    @Column
     private Long id;
 
-    @Column(name = "CL_DATE_RESERVED")
+    @Column
+    @NotNull
     private Instant dateReserved;
 
-    @Column(name = "CL_ACTRESS_ID")
+    @ManyToOne
+    @JoinColumn(name = "actress_id")
     private Actress actress;
 
     public Long getId() {
@@ -36,11 +41,4 @@ public class Reserve {
         this.dateReserved = dateReserved;
     }
 
-    public Actress getActress() {
-        return actress;
-    }
-
-    public void setActress(Actress actress) {
-        this.actress = actress;
-    }
 }
