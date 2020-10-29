@@ -1,43 +1,30 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.sun.istack.NotNull;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
-public class Actress {
+public class Actress extends User {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "CL_ID")
-    private Long id;
-
-    @Column(name = "CL_GENDER")
+    @Column
     private String gender;
 
-    @Column(name = "CL_PRICE")
+    @Column
     private Double price;
 
-    @Column(name = "CL_STARS")
-    private Integer stars;
+    @Column
+    private Integer relevance;
 
-    @Column(name = "CL_GENRE")
+    @Column
     private String genre;
 
-    @Column(name = "CL_STATUS")
+    @Column
     private Boolean status;
 
-    @Column(name = "CL_RESERVES")
-    private Reserve reserves;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany
+    private List<Reserve> reserves;
 
     public String getGender() {
         return gender;
@@ -55,12 +42,12 @@ public class Actress {
         this.price = price;
     }
 
-    public Integer getStars() {
-        return stars;
+    public Integer getRelevance() {
+        return relevance;
     }
 
-    public void setStars(Integer stars) {
-        this.stars = stars;
+    public void setRelevance(Integer relevance) {
+        this.relevance = relevance;
     }
 
     public String getGenre() {
@@ -79,11 +66,11 @@ public class Actress {
         this.status = status;
     }
 
-    public Reserve getReserves() {
+    public List<Reserve> getReserves() {
         return reserves;
     }
 
-    public void setReserves(Reserve reserves) {
+    public void setReserves(List<Reserve> reserves) {
         this.reserves = reserves;
     }
 }
