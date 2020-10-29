@@ -1,0 +1,10 @@
+com/cuscuzcomjava/remotecontroller/RemotecontrollerApplication.java
+ com.cuscuzcomjava.remotecontroller.RemotecontrollerApplication
+com/cuscuzcomjava/remotecontroller/entity/Producer.java
+ com.cuscuzcomjava.remotecontroller.entity.Producer
+com/cuscuzcomjava/remotecontroller/entity/User.java
+ com.cuscuzcomjava.remotecontroller.entity.User
+com/cuscuzcomjava/remotecontroller/entity/Actress.java
+ com.cuscuzcomjava.remotecontroller.entity.Actress
+com/cuscuzcomjava/remotecontroller/entity/Reserve.java
+ com.cuscuzcomjava.remotecontroller.entity.Reserve
