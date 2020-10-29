@@ -18,7 +18,7 @@ public class Reserve {
     private Instant dateReserved;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "actress_id")
     private Actress actress;
 
     public Long getId() {

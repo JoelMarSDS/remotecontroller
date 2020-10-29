@@ -23,7 +23,7 @@ public class Actress extends User {
     @Column
     private Boolean status;
 
-    @OneToMany
+    @OneToMany(mappedBy = "actress")
     private List<Reserve> reserves;
 
     public String getGender() {
