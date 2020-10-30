@@ -14,29 +14,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/actress")
 public class ActressController {
 
     @Autowired
     ActressService service;
 
-    @PostMapping("/create-actress")
+    @PostMapping("/create")
     public ResponseEntity<Actress> createActress(@RequestBody Actress actress) throws Exception {
         return ResponseEntity.ok(service.createActress(actress));
     }
 
-    @GetMapping("/actresses")
+    @GetMapping("/getAll")
     public ResponseEntity<List<Actress>> getAllActresses(){
         return ResponseEntity.ok(service.getAllActresses());
     }
 
-    @GetMapping("/actress/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Actress>> getActress(@PathVariable Long id){
         return ResponseEntity.ok(service.getActress(id));
     }
 
-    @GetMapping("/actress-reserves/{id}")
+    @GetMapping("/{id}/reserves")
     public ResponseEntity<List<Reserve>> searchReserves(@PathVariable Long id){
         return ResponseEntity.ok(service.searchReserves(id));
     }
