@@ -43,7 +43,10 @@ public class ActressService {
             return null;
         }
 
-        return repository.save(actress);
+        auxActress = actress;
+        repository.delete(actress);
+
+        return repository.save(auxActress);
     }
 
     public void deleteActress(Long id) {

@@ -48,7 +48,7 @@ public class ActressController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteActress(@RequestParam("id") Long id) {
+    public void deleteActress(@RequestParam Long id) {
         service.deleteActress(id);
     }
 
