@@ -41,11 +41,4 @@ public class Reserve {
         this.dateReserved = dateReserved;
     }
 
-//    public Actress getActress() {
-//        return actress;
-//    }
-//
-//    public void setActress(Actress actress) {
-//        this.actress = actress;
-//    }
 }
