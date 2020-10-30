@@ -15,11 +15,9 @@ public class ActressService {
     @Autowired
     ActressRepository repository;
 
-    Actress globalActress;
-
     public Actress createActress(Actress actress) throws Exception{
-        globalActress = repository.findByLogin(actress.getLogin());
-        if (globalActress != null){
+        Actress auxActress = repository.findByLogin(actress.getLogin());
+        if (auxActress != null){
             throw new Exception("Login already exists");
         }
         return repository.save(actress);
@@ -30,11 +28,20 @@ public class ActressService {
         return copyActress.getReserves();
     }
 
-    public Optional<Actress> getActress(Long id){
-        return repository.findById(id);
+    public Actress getActress(Long id){
+        return repository.findById(id).orElse(null);
     }
 
     public List<Actress> getAllActresses(){
         return repository.findAll();
+    }
+    
+    public Actress updateActress(Long id, Actress actress) {
+        Actress auxActress = repository.findById(id).orElse(null);
+        if (auxActress == null) {
+            return null;
+        }
+
+        return repository.save(actress);
     }
 }

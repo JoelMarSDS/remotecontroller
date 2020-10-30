@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -28,13 +29,19 @@ public class ActressController {
         return ResponseEntity.ok(service.createActress(actress));
     }
 
+    @PutMapping("/{id}/update")
+    public ResponseEntity<Actress> updateActress(@PathVariable Long id,
+        @RequestBody Actress actress) {
+        return ResponseEntity.ok(service.updateActress(id, actress));
+    }
+
     @GetMapping("/getAll")
     public ResponseEntity<List<Actress>> getAllActresses(){
         return ResponseEntity.ok(service.getAllActresses());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Actress>> getActress(@PathVariable Long id){
+    public ResponseEntity<Actress> getActress(@PathVariable Long id){
         return ResponseEntity.ok(service.getActress(id));
     }
 
