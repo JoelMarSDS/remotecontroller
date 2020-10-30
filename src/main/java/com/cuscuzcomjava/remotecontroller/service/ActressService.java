@@ -34,7 +34,7 @@ public class ActressService {
         return repository.findById(id);
     }
 
-    public List<Actress> getAllActress(){
+    public List<Actress> getAllActresses(){
         return repository.findAll();
     }
 }

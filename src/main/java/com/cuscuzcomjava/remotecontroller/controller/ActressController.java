@@ -27,8 +27,8 @@ public class ActressController {
     }
 
     @GetMapping("/actresses")
-    public ResponseEntity<List<Actress>> getActress(){
-        return ResponseEntity.ok(service.getAllActress());
+    public ResponseEntity<List<Actress>> getAllActresses(){
+        return ResponseEntity.ok(service.getAllActresses());
     }
 
     @GetMapping("/actress/{id}")
@@ -40,5 +40,5 @@ public class ActressController {
     public ResponseEntity<List<Reserve>> searchReserves(@PathVariable Long id){
         return ResponseEntity.ok(service.searchReserves(id));
     }
-    
+
 }
