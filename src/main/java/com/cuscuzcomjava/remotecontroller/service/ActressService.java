@@ -3,6 +3,7 @@ package com.cuscuzcomjava.remotecontroller.service;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
 import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
+import com.cuscuzcomjava.remotecontroller.util.ElementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,5 +44,9 @@ public class ActressService {
         }
 
         return repository.save(actress);
+    }
+
+    public void deleteActress(Long id) {
+        repository.deleteById(id);
     }
 }

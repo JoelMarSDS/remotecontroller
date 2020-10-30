@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/actress")
@@ -29,12 +31,6 @@ public class ActressController {
         return ResponseEntity.ok(service.createActress(actress));
     }
 
-    @PutMapping("/{id}/update")
-    public ResponseEntity<Actress> updateActress(@PathVariable Long id,
-        @RequestBody Actress actress) {
-        return ResponseEntity.ok(service.updateActress(id, actress));
-    }
-
     @GetMapping("/getAll")
     public ResponseEntity<List<Actress>> getAllActresses(){
         return ResponseEntity.ok(service.getAllActresses());
@@ -43,6 +39,17 @@ public class ActressController {
     @GetMapping("/{id}")
     public ResponseEntity<Actress> getActress(@PathVariable Long id){
         return ResponseEntity.ok(service.getActress(id));
+    }
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<Actress> updateActress(@PathVariable Long id,
+        @RequestBody Actress actress) {
+        return ResponseEntity.ok(service.updateActress(id, actress));
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteActress(@RequestParam("id") Long id) {
+        service.deleteActress(id);
     }
 
     @GetMapping("/{id}/reserves")
