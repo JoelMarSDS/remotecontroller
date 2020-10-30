@@ -33,4 +33,8 @@ public class ActressService {
     public Optional<Actress> getActress(Long id){
         return repository.findById(id);
     }
+
+    public List<Actress> getAllActress(){
+        return repository.findAll();
+    }
 }
