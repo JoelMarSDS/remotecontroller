@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ActressController {
@@ -21,13 +22,20 @@ public class ActressController {
     ActressService service;
 
     @PostMapping("/create-actress")
-    public ResponseEntity<Actress> createActress(@RequestBody Actress actress){
+    public ResponseEntity<Actress> createActress(@RequestBody Actress actress) throws Exception {
         return ResponseEntity.ok(service.createActress(actress));
+    }
+
+    @GetMapping("/actress/{id}")
+    public ResponseEntity<Optional<Actress>> getActress(@PathVariable Long id){
+        return ResponseEntity.ok(service.getActress(id));
     }
 
     @GetMapping("/actress-reserves/{id}")
     public ResponseEntity<List<Reserve>> searchReserves(@PathVariable Long id){
         return ResponseEntity.ok(service.searchReserves(id));
     }
+
+
 
 }
