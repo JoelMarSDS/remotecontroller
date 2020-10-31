@@ -47,7 +47,6 @@ public class ActressService {
     }
 
     public void deleteActress(Long id) {
-        Actress actress = repository.findById(id).get();
-        repository.delete(actress);
+        repository.deleteById(id);
     }
 }

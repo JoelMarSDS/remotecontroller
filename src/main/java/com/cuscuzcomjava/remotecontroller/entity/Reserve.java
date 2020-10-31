@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 public class Reserve {
@@ -19,7 +19,7 @@ public class Reserve {
 
     @Column
     @NotNull
-    private Instant dateReserved;
+    private LocalDate reserveDate;
 
     @ManyToOne
     @JoinColumn(name = "actress_id")
@@ -33,12 +33,15 @@ public class Reserve {
         this.id = id;
     }
 
-    public Instant getDateReserved() {
-        return dateReserved;
+    public LocalDate getDateReserved() {
+        return reserveDate;
     }
 
-    public void setDateReserved(Instant dateReserved) {
-        this.dateReserved = dateReserved;
+    public void setDateReserved(LocalDate reserveDate) {
+        this.reserveDate = reserveDate;
     }
 
+    public Actress getActress() {
+        return actress;
+    }
 }
