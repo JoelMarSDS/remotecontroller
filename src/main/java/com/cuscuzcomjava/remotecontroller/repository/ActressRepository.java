@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ActressRepository extends JpaRepository <Actress,Long> {
-
     Actress findByLogin(String login);
 }
