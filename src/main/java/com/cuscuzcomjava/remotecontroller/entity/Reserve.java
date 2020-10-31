@@ -1,5 +1,6 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ public class Reserve {
     @Column
     private Long id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     @NotNull
     private LocalDate reserveDate;

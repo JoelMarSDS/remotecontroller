@@ -25,11 +25,11 @@ public class ReserveService {
       return null;
     }
 
-    List checkDate =(List) repository.findAllByActressId(actress.getId()).stream()
-        .filter(d -> d.getDateReserved() == reserve.getDateReserved());
-    if (!checkDate.isEmpty()) {
-      return getAllReserves(actress.getId());
-    }
+//    List checkDate =(List) repository.findAllByActressId(actress.getId()).stream()
+//        .filter(d -> d.getDateReserved() == reserve.getDateReserved());
+//    if (!checkDate.isEmpty()) {
+//      return getAllReserves(actress.getId());
+//    }
 
     repository.save(reserve);
     return getAllReserves(actress.getId());

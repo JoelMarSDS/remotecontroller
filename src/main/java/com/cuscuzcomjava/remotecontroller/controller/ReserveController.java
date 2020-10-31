@@ -14,31 +14,32 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/actress")
+@RestController
+@RequestMapping("/reserve")
 public class ReserveController {
 
   @Autowired
   ReserveService service;
 
-  @PostMapping("/reserve/create")
-  public ResponseEntity<List<Reserve>> createResponse(@RequestBody Reserve reserve) {
+  @PostMapping("/create")
+  public ResponseEntity<List<Reserve>> createReserve(@RequestBody Reserve reserve) {
     return ResponseEntity.ok(service.createReserve(reserve));
   }
 
-  @GetMapping("/{id}/reserves")
+  @GetMapping("/{id}")
   public ResponseEntity<List<Reserve>> getAllReserves(@PathVariable Long id) {
     return ResponseEntity.ok(service.getAllReserves(id));
   }
 
-  @PutMapping("/{id}/reserve/update")
+  @PutMapping("/{id}/update")
   public ResponseEntity<List<Reserve>> updateReserve(@PathVariable Long id,
       @RequestBody Reserve reserve) {
     return ResponseEntity.ok(service.updateReserve(id, reserve));
   }
 
-  @DeleteMapping("/reserve/delete")
+  @DeleteMapping("/delete")
   public ResponseEntity<List<Reserve>> deleteReserve(@RequestParam Long id) {
     return ResponseEntity.ok(service.deleteReserve(id));
   }
