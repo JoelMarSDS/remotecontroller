@@ -36,20 +36,18 @@ public class ActressService {
     public List<Actress> getAllActresses(){
         return repository.findAll();
     }
-    
+
     public Actress updateActress(Long id, Actress actress) {
         Actress auxActress = repository.findById(id).orElse(null);
         if (auxActress == null) {
             return null;
         }
-
-        auxActress = actress;
-        repository.delete(actress);
-
-        return repository.save(auxActress);
+        actress.setId(auxActress.getId());
+        return repository.save(actress);
     }
 
     public void deleteActress(Long id) {
-        repository.deleteById(id);
+        Actress actress = repository.findById(id).get();
+        repository.delete(actress);
     }
 }
