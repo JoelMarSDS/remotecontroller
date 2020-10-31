@@ -9,35 +9,36 @@ import org.springframework.stereotype.Component;
 public class ProducerService {
 
     @Autowired
-    ProducerRepository repository;
+    ProducerRepository producerRepository;
 
     public Producer createProducer(Producer producer) throws Exception{
-        Producer auxProducer = repository.findByLogin(producer.getLogin());
+        Producer auxProducer = producerRepository.findByLogin(producer.getLogin());
         if (auxProducer != null){
             throw new Exception("Producer login already exists");
         }
-        return repository.save(producer);
+        return producerRepository.save(producer);
     }
 
     public Producer getProducer(Long id){
-        return repository.findById(id).orElse(null);
+        return producerRepository.findById(id).orElse(null);
     }
 
     public Producer updateProducer(Long id, Producer producer){
-        Producer auxProducer = repository.findById(id).orElse(null);
+        Producer auxProducer = producerRepository.findById(id).orElse(null);
         if (auxProducer == null){
             return null;
         }
         producer.setId(auxProducer.getId());
-        return repository.save(producer);
+        return producerRepository.save(producer);
     }
 
-    public void deleteProducer(Long id){
-        Producer auxProducer = repository.findById(id).orElse(null);
+    public void deleteProducer(Long id) throws Exception {
+        Producer auxProducer = producerRepository.findById(id).orElse(null);
         if (auxProducer == null){
-            return;
+            throw new Exception("Producer not exists");
         }
-        repository.delete(auxProducer);
+        producerRepository.delete(auxProducer);
+
     }
 
 
