@@ -25,6 +25,10 @@ public class Reserve {
     @JoinColumn(name = "actress_id")
     private Actress actress;
 
+    @ManyToOne
+    @JoinColumn(name = "producer_id")
+    private Producer producer;
+
     public Long getId() {
         return id;
     }
