@@ -5,6 +5,8 @@ import com.cuscuzcomjava.remotecontroller.repository.ProducerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ProducerService {
 
@@ -23,6 +25,10 @@ public class ProducerService {
         return producerRepository.findById(id).orElse(null);
     }
 
+    public List<Producer> getAllProducer(){
+        return producerRepository.findAll();
+    }
+
     public Producer updateProducer(Long id, Producer producer){
         Producer auxProducer = producerRepository.findById(id).orElse(null);
         if (auxProducer == null){
@@ -32,15 +38,11 @@ public class ProducerService {
         return producerRepository.save(producer);
     }
 
-    public void deleteProducer(Long id) throws Exception {
+    public void deleteProducer(Long id) {
         Producer auxProducer = producerRepository.findById(id).orElse(null);
         if (auxProducer == null){
-            throw new Exception("Producer not exists");
+            return;
         }
-        producerRepository.delete(auxProducer);
-
+        producerRepository.deleteById(id);
     }
-
-
-
 }
