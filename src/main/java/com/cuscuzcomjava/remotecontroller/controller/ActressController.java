@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/actress")
 public class ActressController {
 
@@ -48,13 +49,7 @@ public class ActressController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteActress(@RequestParam("id") Long id) {
+    public void deleteActress(@RequestParam Long id) {
         service.deleteActress(id);
     }
-
-    @GetMapping("/{id}/reserves")
-    public ResponseEntity<List<Reserve>> searchReserves(@PathVariable Long id){
-        return ResponseEntity.ok(service.searchReserves(id));
-    }
-
 }

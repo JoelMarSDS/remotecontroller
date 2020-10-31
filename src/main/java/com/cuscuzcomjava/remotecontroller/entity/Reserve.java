@@ -1,5 +1,6 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +8,7 @@ import javax.persistence.Id;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 public class Reserve {
@@ -17,9 +18,10 @@ public class Reserve {
     @Column
     private Long id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column
     @NotNull
-    private Instant dateReserved;
+    private LocalDate reserveDate;
 
     @ManyToOne
     @JoinColumn(name = "actress_id")
@@ -33,12 +35,15 @@ public class Reserve {
         this.id = id;
     }
 
-    public Instant getDateReserved() {
-        return dateReserved;
+    public LocalDate getDateReserved() {
+        return reserveDate;
     }
 
-    public void setDateReserved(Instant dateReserved) {
-        this.dateReserved = dateReserved;
+    public void setDateReserved(LocalDate reserveDate) {
+        this.reserveDate = reserveDate;
     }
 
+    public Actress getActress() {
+        return actress;
+    }
 }

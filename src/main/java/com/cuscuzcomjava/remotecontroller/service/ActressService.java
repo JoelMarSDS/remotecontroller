@@ -36,13 +36,13 @@ public class ActressService {
     public List<Actress> getAllActresses(){
         return repository.findAll();
     }
-    
+
     public Actress updateActress(Long id, Actress actress) {
         Actress auxActress = repository.findById(id).orElse(null);
         if (auxActress == null) {
             return null;
         }
-
+        actress.setId(auxActress.getId());
         return repository.save(actress);
     }
 
