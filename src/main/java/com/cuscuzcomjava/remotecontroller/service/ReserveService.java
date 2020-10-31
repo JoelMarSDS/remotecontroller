@@ -27,7 +27,7 @@ public class ReserveService {
 
     List checkDate =(List) repository.findAllByActressId(actress.getId()).stream()
         .filter(d -> d.getDateReserved() == reserve.getDateReserved());
-    if (checkDate.isEmpty()) {
+    if (!checkDate.isEmpty()) {
       return getAllReserves(actress.getId());
     }
 
@@ -50,7 +50,13 @@ public class ReserveService {
     return getAllReserves(newReserve.getActress().getId());
   }
 
-  public void deleteReserve(Long id) {
+  public List<Reserve> deleteReserve(Long id) {
+    Reserve reserve = repository.findById(id).orElse(null);
+    if (reserve == null) {
+      return null;
+    }
+
     repository.deleteById(id);
+    return getAllReserves(reserve.getActress().getId());
   }
 }

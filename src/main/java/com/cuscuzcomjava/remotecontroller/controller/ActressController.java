@@ -51,10 +51,4 @@ public class ActressController {
     public void deleteActress(@RequestParam Long id) {
         service.deleteActress(id);
     }
-
-    @GetMapping("/{id}/reserves")
-    public ResponseEntity<List<Reserve>> searchReserves(@PathVariable Long id){
-        return ResponseEntity.ok(service.searchReserves(id));
-    }
-
 }
