@@ -1,5 +1,6 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Actress extends User {
     @Column
     private Boolean status;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "actress")
     private List<Reserve> reserves;
 
