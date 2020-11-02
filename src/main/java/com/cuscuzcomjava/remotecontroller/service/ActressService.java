@@ -7,6 +7,7 @@ import com.cuscuzcomjava.remotecontroller.util.ElementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,13 +25,24 @@ public class ActressService {
         return repository.save(actress);
     }
 
-    public List<Reserve> searchReserves(Long id){
-        Actress copyActress = repository.getOne(id);
-        return copyActress.getReserves();
-    }
 
     public Actress getActress(Long id){
         return repository.findById(id).orElse(null);
+    }
+
+    public List<Actress> getActressByStatus(){
+        List<Actress> activeActresses = new ArrayList<>();
+        List<Actress> allActress = repository.findAll();
+        if (allActress.isEmpty()){
+            return null;
+        }
+        for (Actress actress: allActress
+             ) {
+            if(actress.getStatus()){
+                activeActresses.add(actress);
+            }
+        }
+        return activeActresses;
     }
 
     public List<Actress> getAllActresses(){

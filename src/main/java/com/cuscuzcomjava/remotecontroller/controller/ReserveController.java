@@ -2,7 +2,11 @@ package com.cuscuzcomjava.remotecontroller.controller;
 
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
 import com.cuscuzcomjava.remotecontroller.service.ReserveService;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,9 +32,29 @@ public class ReserveController {
     return ResponseEntity.ok(service.createReserve(reserve));
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<List<Reserve>> getAllReserves(@PathVariable Long id) {
-    return ResponseEntity.ok(service.getAllReserves(id));
+  @GetMapping("/{id}/actress")
+  public ResponseEntity<List<Reserve>> getAllActressReserves(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getAllActressReserves(id));
+  }
+
+  @GetMapping("/{id}/producer")
+  public ResponseEntity<List<Reserve>> getAllProducerReserves(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getAllProducerReserves(id));
+  }
+
+  @GetMapping("/{id}/producer/count")
+  public ResponseEntity<Integer> getProducerReservesNumber(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getProducerReservesNumber(id));
+  }
+
+  @GetMapping("/{id}/producer/dates")
+  public ResponseEntity<Map<LocalDate, Long>> getDatesMoreReserved(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getDatesMoreReserved(id));
+  }
+
+  @GetMapping("/{id}/producer/actresses")
+  public ResponseEntity<Map<String, Long>> getActressesMoreReserved(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getActressesMoreReserved(id));
   }
 
   @PutMapping("/{id}/update")

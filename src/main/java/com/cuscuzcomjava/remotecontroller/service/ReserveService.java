@@ -1,12 +1,15 @@
 package com.cuscuzcomjava.remotecontroller.service;
 
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
+import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
-import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ReserveRepository;
-import com.cuscuzcomjava.remotecontroller.repository.UserRepository;
+
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +22,29 @@ public class ReserveService {
   @Autowired
   ActressService actressService;
 
+  @Autowired
+  ProducerService producerService;
+
   public List<Reserve> createReserve(Reserve reserve) {
+    Producer producer = producerService.getProducer(reserve.getProducer().getId());
     Actress actress = actressService.getActress(reserve.getActress().getId());
-    if (actress == null) {
+    if (producer == null) {
       return null;
+    }
+
+    if(actress == null) {//verificando existência da atriz
+      return null;
+    }
+
+    if(!actress.getStatus()){ //impede reservar estado inativo
+      return null;
+    }
+
+    for (Reserve auxReserve: repository.findAllByProducerId(producer.getId())) { //impede a criação de reservas repetidas
+      if (auxReserve.getDateReserved().equals(reserve.getDateReserved())
+              && auxReserve.getActress().getId().equals(reserve.getActress().getId())){
+        return null;
+      }
     }
 
 //    List checkDate =(List) repository.findAllByActressId(actress.getId()).stream()
@@ -32,11 +54,65 @@ public class ReserveService {
 //    }
 
     repository.save(reserve);
-    return getAllReserves(actress.getId());
+    return repository.findAllByProducerId(producer.getId());
   }
 
-  public List<Reserve> getAllReserves(Long id) {
+  public List<Reserve> getAllActressReserves(Long id) {
     return repository.findAllByActressId(id);
+  }
+
+  public List<Reserve> getAllProducerReserves(Long id) {
+    return repository.findAllByProducerId(id);
+  }
+
+  public Integer getProducerReservesNumber(Long id){ //countReserves
+    return repository.findAll().size();
+  }
+
+  public Map<LocalDate, Long> getDatesMoreReserved(Long id){
+    List<LocalDate> dateList = new ArrayList<>();
+    for (Reserve auxReserve: repository.findAllByProducerId(id)) {
+      dateList.add(auxReserve.getDateReserved());
+    }
+    //contando e agrupando datas
+    Map<LocalDate, Long> dates =
+            dateList.stream().collect(
+                    Collectors.groupingBy(
+                            Function.identity(), Collectors.counting()
+                    )
+            );
+
+    Map<LocalDate, Long> datesOrdered = new LinkedHashMap<>();
+
+    //encontrando datas mais reservadas e colocando em ordem decrescente
+    dates.entrySet().stream()
+            .sorted(Map.Entry.<LocalDate, Long>comparingByValue()
+                    .reversed()).forEachOrdered(e -> datesOrdered.put(e.getKey(), e.getValue()));
+
+    return datesOrdered;
+  }
+
+  public Map<String, Long> getActressesMoreReserved(Long id){
+    List<String> actressList = new ArrayList<>();
+    for (Reserve auxReserve: repository.findAllByProducerId(id)) {
+      actressList.add(auxReserve.getActress().getLogin());
+    }
+    //contando e agrupando atrizes
+    Map<String, Long> dates =
+            actressList.stream().collect(
+                    Collectors.groupingBy(
+                            Function.identity(), Collectors.counting()
+                    )
+            );
+
+    Map<String, Long> actressOrdered = new LinkedHashMap<>();
+
+    //encontrando atrizes mais reservadas e colocando em ordem decrescente
+    dates.entrySet().stream()
+            .sorted(Map.Entry.<String, Long>comparingByValue()
+                    .reversed()).forEachOrdered(e -> actressOrdered.put(e.getKey(), e.getValue()));
+
+    return actressOrdered;
   }
 
   public List<Reserve> updateReserve(Long oldId, Reserve newReserve) {
@@ -47,7 +123,7 @@ public class ReserveService {
 
     newReserve.setId(oldId);
     repository.save(newReserve);
-    return getAllReserves(newReserve.getActress().getId());
+    return getAllProducerReserves(newReserve.getProducer().getId());
   }
 
   public List<Reserve> deleteReserve(Long id) {
@@ -57,6 +133,6 @@ public class ReserveService {
     }
 
     repository.deleteById(id);
-    return getAllReserves(reserve.getActress().getId());
+    return getAllProducerReserves(reserve.getProducer().getId());
   }
 }

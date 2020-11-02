@@ -37,6 +37,11 @@ public class ActressController {
         return ResponseEntity.ok(service.getAllActresses());
     }
 
+    @GetMapping("/getActive")
+    public ResponseEntity<List<Actress>> getActiveActresses(){
+        return ResponseEntity.ok(service.getActressByStatus());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Actress> getActress(@PathVariable Long id){
         return ResponseEntity.ok(service.getActress(id));
