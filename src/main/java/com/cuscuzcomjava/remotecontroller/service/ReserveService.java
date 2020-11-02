@@ -29,9 +29,15 @@ public class ReserveService {
     if (producer == null) {
       return null;
     }
-    if(actress == null) {
+
+    if(actress == null) {//verificando existência da atriz
       return null;
     }
+
+    if(!actress.getStatus()){ //impede reservar estado inativo
+      return null;
+    }
+
     for (Reserve auxReserve: repository.findAll()) { //impede a criação de reservas repetidas
       if (auxReserve.getDateReserved().equals(reserve.getDateReserved())
               && auxReserve.getActress().getId().equals(reserve.getActress().getId())){
@@ -44,7 +50,7 @@ public class ReserveService {
 //    if (!checkDate.isEmpty()) {
 //      return getAllReserves(actress.getId());
 //    }
-    actress.getReserves().add(reserve);
+
     repository.save(reserve);
     return repository.findAllByProducerId(producer.getId());
   }
