@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReserveRepository extends JpaRepository<Reserve,Long> {
   List<Reserve> findAllByActressId(Long id);
-
+  List<Reserve> findAllByProducerId(Long id);
 }
