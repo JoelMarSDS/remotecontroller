@@ -90,7 +90,29 @@ public class ReserveService {
                     .reversed()).forEachOrdered(e -> datesOrdered.put(e.getKey(), e.getValue()));
 
     return datesOrdered;
+  }
 
+  public Map<String, Long> getActressesMoreReserved(Long id){
+    List<String> actressList = new ArrayList<>();
+    for (Reserve auxReserve: repository.findAllByProducerId(id)) {
+      actressList.add(auxReserve.getActress().getLogin());
+    }
+    //contando e agrupando atrizes
+    Map<String, Long> dates =
+            actressList.stream().collect(
+                    Collectors.groupingBy(
+                            Function.identity(), Collectors.counting()
+                    )
+            );
+
+    Map<String, Long> actressOrdered = new LinkedHashMap<>();
+
+    //encontrando atrizes mais reservadas e colocando em ordem decrescente
+    dates.entrySet().stream()
+            .sorted(Map.Entry.<String, Long>comparingByValue()
+                    .reversed()).forEachOrdered(e -> actressOrdered.put(e.getKey(), e.getValue()));
+
+    return actressOrdered;
   }
 
   public List<Reserve> updateReserve(Long oldId, Reserve newReserve) {

@@ -52,6 +52,11 @@ public class ReserveController {
     return ResponseEntity.ok(service.getDatesMoreReserved(id));
   }
 
+  @GetMapping("/{id}/producer/actresses")
+  public ResponseEntity<Map<String, Long>> getActressesMoreReserved(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getActressesMoreReserved(id));
+  }
+
   @PutMapping("/{id}/update")
   public ResponseEntity<List<Reserve>> updateReserve(@PathVariable Long id,
       @RequestBody Reserve reserve) {
