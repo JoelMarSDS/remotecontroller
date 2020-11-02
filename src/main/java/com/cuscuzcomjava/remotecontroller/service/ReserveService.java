@@ -3,11 +3,13 @@ package com.cuscuzcomjava.remotecontroller.service;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
-import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ReserveRepository;
-import com.cuscuzcomjava.remotecontroller.repository.UserRepository;
+
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +40,7 @@ public class ReserveService {
       return null;
     }
 
-    for (Reserve auxReserve: repository.findAll()) { //impede a criação de reservas repetidas
+    for (Reserve auxReserve: repository.findAllByProducerId(producer.getId())) { //impede a criação de reservas repetidas
       if (auxReserve.getDateReserved().equals(reserve.getDateReserved())
               && auxReserve.getActress().getId().equals(reserve.getActress().getId())){
         return null;
@@ -61,6 +63,34 @@ public class ReserveService {
 
   public List<Reserve> getAllProducerReserves(Long id) {
     return repository.findAllByProducerId(id);
+  }
+
+  public Integer getProducerReservesNumber(Long id){ //countReserves
+    return repository.findAll().size();
+  }
+
+  public Map<LocalDate, Long> getDatesMoreReserved(Long id){
+    List<LocalDate> dateList = new ArrayList<>();
+    for (Reserve auxReserve: repository.findAllByProducerId(id)) {
+      dateList.add(auxReserve.getDateReserved());
+    }
+    //contando e agrupando datas
+    Map<LocalDate, Long> dates =
+            dateList.stream().collect(
+                    Collectors.groupingBy(
+                            Function.identity(), Collectors.counting()
+                    )
+            );
+
+    Map<LocalDate, Long> datesOrdered = new LinkedHashMap<>();
+
+    //encontrando datas mais reservadas e colocando em ordem decrescente
+    dates.entrySet().stream()
+            .sorted(Map.Entry.<LocalDate, Long>comparingByValue()
+                    .reversed()).forEachOrdered(e -> datesOrdered.put(e.getKey(), e.getValue()));
+
+    return datesOrdered;
+
   }
 
   public List<Reserve> updateReserve(Long oldId, Reserve newReserve) {
