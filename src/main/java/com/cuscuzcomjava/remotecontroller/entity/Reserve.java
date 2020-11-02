@@ -50,4 +50,8 @@ public class Reserve {
     public Actress getActress() {
         return actress;
     }
+
+    public Producer getProducer() {
+        return producer;
+    }
 }

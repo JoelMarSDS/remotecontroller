@@ -25,7 +25,7 @@ public class Actress extends User {
     private Boolean status;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "actress")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "producer")
     private List<Reserve> reserves;
 
     public String getGender() {
