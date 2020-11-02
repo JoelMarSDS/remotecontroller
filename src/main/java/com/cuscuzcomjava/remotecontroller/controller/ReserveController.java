@@ -28,9 +28,14 @@ public class ReserveController {
     return ResponseEntity.ok(service.createReserve(reserve));
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<List<Reserve>> getAllReserves(@PathVariable Long id) {
-    return ResponseEntity.ok(service.getAllReserves(id));
+  @GetMapping("/{id}/actress")
+  public ResponseEntity<List<Reserve>> getAllActressReserves(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getAllActressReserves(id));
+  }
+
+  @GetMapping("/{id}/producer")
+  public ResponseEntity<List<Reserve>> getAllProducerReserves(@PathVariable Long id) {
+    return ResponseEntity.ok(service.getAllProducerReserves(id));
   }
 
   @PutMapping("/{id}/update")
