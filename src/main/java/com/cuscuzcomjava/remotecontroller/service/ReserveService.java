@@ -25,8 +25,18 @@ public class ReserveService {
 
   public List<Reserve> createReserve(Reserve reserve) {
     Producer producer = producerService.getProducer(reserve.getProducer().getId());
+    Actress actress = actressService.getActress(reserve.getActress().getId());
     if (producer == null) {
       return null;
+    }
+    if(actress == null) {
+      return null;
+    }
+    for (Reserve auxReserve: repository.findAll()) { //impede a criação de reservas repetidas
+      if (auxReserve.getDateReserved().equals(reserve.getDateReserved())
+              && auxReserve.getActress().getId().equals(reserve.getActress().getId())){
+        return null;
+      }
     }
 
 //    List checkDate =(List) repository.findAllByActressId(actress.getId()).stream()
@@ -34,6 +44,7 @@ public class ReserveService {
 //    if (!checkDate.isEmpty()) {
 //      return getAllReserves(actress.getId());
 //    }
+    actress.getReserves().add(reserve);
     repository.save(reserve);
     return repository.findAllByProducerId(producer.getId());
   }
