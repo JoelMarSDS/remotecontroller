@@ -1,6 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.service;
 
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
+import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
 import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ReserveRepository;
@@ -19,9 +20,12 @@ public class ReserveService {
   @Autowired
   ActressService actressService;
 
+  @Autowired
+  ProducerService producerService;
+
   public List<Reserve> createReserve(Reserve reserve) {
-    Actress actress = actressService.getActress(reserve.getActress().getId());
-    if (actress == null) {
+    Producer producer = producerService.getProducer(reserve.getProducer().getId());
+    if (producer == null) {
       return null;
     }
 
@@ -30,13 +34,16 @@ public class ReserveService {
 //    if (!checkDate.isEmpty()) {
 //      return getAllReserves(actress.getId());
 //    }
-
     repository.save(reserve);
-    return getAllReserves(actress.getId());
+    return repository.findAllByProducerId(producer.getId());
   }
 
-  public List<Reserve> getAllReserves(Long id) {
+  public List<Reserve> getAllActressReserves(Long id) {
     return repository.findAllByActressId(id);
+  }
+
+  public List<Reserve> getAllProducerReserves(Long id) {
+    return repository.findAllByProducerId(id);
   }
 
   public List<Reserve> updateReserve(Long oldId, Reserve newReserve) {
@@ -47,7 +54,7 @@ public class ReserveService {
 
     newReserve.setId(oldId);
     repository.save(newReserve);
-    return getAllReserves(newReserve.getActress().getId());
+    return getAllProducerReserves(newReserve.getProducer().getId());
   }
 
   public List<Reserve> deleteReserve(Long id) {
@@ -57,6 +64,6 @@ public class ReserveService {
     }
 
     repository.deleteById(id);
-    return getAllReserves(reserve.getActress().getId());
+    return getAllProducerReserves(reserve.getProducer().getId());
   }
 }
