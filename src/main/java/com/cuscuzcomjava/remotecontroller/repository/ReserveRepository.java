@@ -1,13 +1,16 @@
 package com.cuscuzcomjava.remotecontroller.repository;
 
+import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ReserveRepository extends JpaRepository<Reserve,Long> {
-  List<Reserve> findAllByActressId(Long id);
-  List<Reserve> findAllByProducerId(Long id);
+  List<Reserve> findByActress(Actress actress);
+
+  List<Reserve> findByProducer(Producer producerId);
 }

@@ -41,12 +41,11 @@ public class Reserve {
         this.id = id;
     }
 
-    @JsonIgnore
-    public LocalDate getDateReserved() {
+    public LocalDate getReserveDate() {
         return reserveDate;
     }
 
-    public void setDateReserved(LocalDate reserveDate) {
+    public void setReserveDate(LocalDate reserveDate) {
         this.reserveDate = reserveDate;
     }
 
@@ -54,7 +53,15 @@ public class Reserve {
         return actress;
     }
 
+    public void setActress(Actress actress) {
+        this.actress = actress;
+    }
+
     public Producer getProducer() {
         return producer;
+    }
+
+    public void setProducer(Producer producer) {
+        this.producer = producer;
     }
 }

@@ -1,8 +1,11 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
+import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
+
 import javax.persistence.*;
 
-@MappedSuperclass
+
+@Entity
 public class User {
 
     @Id
@@ -11,13 +14,19 @@ public class User {
     private Long id;
 
     @Column
-    private  String name;
-
-    @Column
     private String login;
 
     @Column
     private String password;
+
+    @Column
+    private TypeUserEnumeration typeUserEnumeration;
+
+    @OneToOne(mappedBy = "user")
+    private Actress actress;
+
+    @OneToOne(mappedBy = "user")
+    private Producer process;
 
     public Long getId() {
         return id;
@@ -25,14 +34,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getLogin() {
@@ -49,5 +50,29 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public TypeUserEnumeration getTypeUserEnumeration() {
+        return typeUserEnumeration;
+    }
+
+    public void setTypeUserEnumeration(TypeUserEnumeration typeUserEnumeration) {
+        this.typeUserEnumeration = typeUserEnumeration;
+    }
+
+    public Actress getActress() {
+        return actress;
+    }
+
+    public void setActress(Actress actress) {
+        this.actress = actress;
+    }
+
+    public Producer getProcess() {
+        return process;
+    }
+
+    public void setProcess(Producer process) {
+        this.process = process;
     }
 }

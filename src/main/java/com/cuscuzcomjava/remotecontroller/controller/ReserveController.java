@@ -3,6 +3,7 @@ package com.cuscuzcomjava.remotecontroller.controller;
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
 import com.cuscuzcomjava.remotecontroller.service.ReserveService;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -25,46 +26,52 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReserveController {
 
   @Autowired
-  ReserveService service;
+  private ReserveService reserveService;
 
-  @PostMapping("/create")
-  public ResponseEntity<List<Reserve>> createReserve(@RequestBody Reserve reserve) {
-    return ResponseEntity.ok(service.createReserve(reserve));
+  @PostMapping("/saveReserve/{saveReserveId}")
+  public ResponseEntity<Reserve> saveReserve(@RequestBody Reserve reserve, @PathVariable Long saveReserveId) throws Exception {
+    if (reserve != null) {
+      Reserve saveReserve = reserveService.saveReserve(reserve, saveReserveId);
+      URI uri = URI.create(String.format("/reserve/create/%d",reserve.getId()));
+      return ResponseEntity.created(uri).body(reserve);
+    }
+    return ResponseEntity.notFound().build();
   }
 
-  @GetMapping("/{id}/actress")
-  public ResponseEntity<List<Reserve>> getAllActressReserves(@PathVariable Long id) {
-    return ResponseEntity.ok(service.getAllActressReserves(id));
+  @GetMapping("/listReserve")
+  public ResponseEntity<List<Reserve>> getListReserve() throws Exception {
+    List<Reserve> reserves = reserveService.getListReserve();
+    if (!reserves.isEmpty()){
+      return ResponseEntity.ok(reserves);
+    }
+    return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/{id}/producer")
-  public ResponseEntity<List<Reserve>> getAllProducerReserves(@PathVariable Long id) {
-    return ResponseEntity.ok(service.getAllProducerReserves(id));
+  @GetMapping("/listReserveActress/{reserveActressId}")
+  public ResponseEntity<List<Reserve>> getReserveActress(@PathVariable Long reserveActressId) throws Exception {
+    if (reserveActressId != null){
+      List<Reserve> reserves = reserveService.getReserveActress(reserveActressId);
+      return ResponseEntity.ok(reserves);
+    }
+    return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/{id}/producer/count")
-  public ResponseEntity<Integer> getProducerReservesNumber(@PathVariable Long id) {
-    return ResponseEntity.ok(service.getProducerReservesNumber(id));
+  @GetMapping("/listReserveProducer/{reserveProducerId}")
+  public ResponseEntity<List<Reserve>> getReserveProducer(@PathVariable Long reserveProducerId) throws Exception {
+    if (reserveProducerId != null) {
+      List<Reserve> reserves = reserveService.getReserveProducer(reserveProducerId);
+      return ResponseEntity.ok(reserves);
+    }
+    return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/{id}/producer/dates")
-  public ResponseEntity<Map<LocalDate, Long>> getDatesMoreReserved(@PathVariable Long id) {
-    return ResponseEntity.ok(service.getDatesMoreReserved(id));
+  @GetMapping("/countReserveProducer/{countReserveProducerId}")
+  public ResponseEntity<Integer> getCountReserveProducer(@PathVariable Long countReserveProducerId) throws Exception {
+    if (countReserveProducerId != null){
+      Integer countReserve = reserveService.getCountReserveProducer(countReserveProducerId);
+      return ResponseEntity.ok(countReserve);
+    }
+    return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("/{id}/producer/actresses")
-  public ResponseEntity<Map<String, Long>> getActressesMoreReserved(@PathVariable Long id) {
-    return ResponseEntity.ok(service.getActressesMoreReserved(id));
-  }
-
-  @PutMapping("/{id}/update")
-  public ResponseEntity<List<Reserve>> updateReserve(@PathVariable Long id,
-      @RequestBody Reserve reserve) {
-    return ResponseEntity.ok(service.updateReserve(id, reserve));
-  }
-
-  @DeleteMapping("/delete")
-  public ResponseEntity<List<Reserve>> deleteReserve(@RequestParam Long id) {
-    return ResponseEntity.ok(service.deleteReserve(id));
-  }
 }

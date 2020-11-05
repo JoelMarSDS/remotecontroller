@@ -1,13 +1,18 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Actress extends User {
+public class Actress {
+
+    @Id
+    @GeneratedValue
+    @Column
+    private Long id;
+
+    @Column
+    private  String name;
 
     @Column
     private String gender;
@@ -24,9 +29,28 @@ public class Actress extends User {
     @Column
     private Boolean status;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "producer")
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "actress")
     private List<Reserve> reserves;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getGender() {
         return gender;
@@ -66,6 +90,14 @@ public class Actress extends User {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Reserve> getReserves() {

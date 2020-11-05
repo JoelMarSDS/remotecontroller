@@ -10,37 +10,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/producer")
 public class ProducerController {
 
     @Autowired
-    ProducerService producerService;
+    private ProducerService producerService;
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, String>> createProducer(@RequestBody Producer producer) throws Exception {
-        producerService.createProducer(producer);
-        return ResponseEntity.ok(Map.of("message", "Producer was created"));
+    public ResponseEntity<Producer> saveProducer(@RequestBody Producer producer) throws Exception {
+        if (producer != null){
+            Producer saveProducer = producerService.saveProducer(producer);
+            return ResponseEntity.ok(saveProducer);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Producer> getProducer(@PathVariable Long id) {
-        return ResponseEntity.ok(producerService.getProducer(id));
+    @PutMapping("/updateProducer/{updateProducerId}")
+    public ResponseEntity<Producer> updateProducer(@RequestBody Producer producer, @PathVariable Long updateProducerId) throws Exception {
+        if (producer != null && updateProducerId != null) {
+            Producer producerUpdate = producerService.updateProducer(producer, updateProducerId);
+            return ResponseEntity.ok(producerUpdate);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Producer>> getAllProducers() {
-        return ResponseEntity.ok(producerService.getAllProducer());
+    @DeleteMapping("deleteActress/{deleteActressId}")
+    public ResponseEntity<Producer> deleteActress(@PathVariable Long deleteActressId) throws Exception {
+        if (deleteActressId != null) {
+            Producer producer = producerService.deleteProducer(deleteActressId);
+            return ResponseEntity.ok(producer);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}/update")
-    public ResponseEntity<Producer> updateProducer(@PathVariable Long id, @RequestBody Producer producer) {
-        return ResponseEntity.ok(producerService.updateProducer(id, producer));
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<Map<String, String>> deleteProducer(@RequestParam Long id){
-        producerService.deleteProducer(id);
-        return ResponseEntity.ok(Map.of("message", "Producer was deleted"));
-    }
 }

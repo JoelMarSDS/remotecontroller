@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,36 +26,52 @@ import org.springframework.web.bind.annotation.RestController;
 public class ActressController {
 
     @Autowired
-    ActressService service;
+    private ActressService actressService;
 
     @PostMapping("/create")
-    public ResponseEntity<Actress> createActress(@RequestBody Actress actress) throws Exception {
-        return ResponseEntity.ok(service.createActress(actress));
+    public ResponseEntity<Actress> saveActress(@RequestBody Actress actress) throws Exception {
+        if (actress != null) {
+            Actress actressSave = actressService.saveActress(actress);
+            URI uri = URI.create(String.format("/actress/create/%d",actressSave.getId()));
+            return ResponseEntity.created(uri).body(actressSave);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<Actress>> getAllActresses(){
-        return ResponseEntity.ok(service.getAllActresses());
+    @GetMapping("/listActress")
+    public ResponseEntity<List<Actress>> getListActress() throws Exception {
+        List<Actress> actresses = actressService.getListActress();
+        if (!actresses.isEmpty()){
+            return ResponseEntity.ok(actresses);
+        }
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getActive")
-    public ResponseEntity<List<Actress>> getActiveActresses(){
-        return ResponseEntity.ok(service.getActressByStatus());
+    @PutMapping("/updateActress/{updateActressId}")
+    public ResponseEntity<Actress> updateActress(@RequestBody Actress actress, @PathVariable Long updateActressId) throws Exception {
+        if (actress != null && updateActressId != null) {
+            Actress actressUpdate = actressService.updateActress(actress, updateActressId);
+            return ResponseEntity.ok(actressUpdate);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Actress> getActress(@PathVariable Long id){
-        return ResponseEntity.ok(service.getActress(id));
+    @GetMapping("/actressId/{byId}")
+    public ResponseEntity<Actress> getById(@PathVariable Long byId) throws Exception {
+        if (byId != null){
+            Actress actress = actressService.getById(byId);
+            return ResponseEntity.ok(actress);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}/update")
-    public ResponseEntity<Actress> updateActress(@PathVariable Long id,
-        @RequestBody Actress actress) {
-        return ResponseEntity.ok(service.updateActress(id, actress));
+    @DeleteMapping("deleteActress/{deleteActressId}")
+    public ResponseEntity<Actress> deleteActress(@PathVariable Long deleteActressId) throws Exception {
+        if (deleteActressId != null) {
+            Actress actress = actressService.deleteActress(deleteActressId);
+            return ResponseEntity.ok(actress);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/delete")
-    public void deleteActress(@RequestParam Long id) {
-        service.deleteActress(id);
-    }
 }

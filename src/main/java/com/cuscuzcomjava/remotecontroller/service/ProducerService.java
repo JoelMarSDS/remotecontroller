@@ -1,48 +1,67 @@
 package com.cuscuzcomjava.remotecontroller.service;
 
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFundException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
+import com.cuscuzcomjava.remotecontroller.entity.User;
+import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
+import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ProducerRepository;
+import com.cuscuzcomjava.remotecontroller.repository.ReserveRepository;
+import com.cuscuzcomjava.remotecontroller.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class ProducerService {
 
     @Autowired
-    ProducerRepository producerRepository;
+    private ProducerRepository producerRepository;
 
-    public Producer createProducer(Producer producer) throws Exception{
-        Producer auxProducer = producerRepository.findByLogin(producer.getLogin());
-        if (auxProducer != null){
-            throw new Exception("Producer login already exists");
+    @Autowired
+    private ActressRepository actressRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ReserveRepository reserveRepository;
+
+    public Producer saveProducer(Producer producer) throws Exception {
+        User user = userRepository.findByLogin(producer.getUser().getLogin());
+        if (user == null){
+            throw new ConflictException(PropertiesSourceMessange.getMessageSource(""));
         }
-        return producerRepository.save(producer);
+        producer.getUser().setTypeUserEnumeration(TypeUserEnumeration.ADMIN);
+        Producer saveProducer = producerRepository.save(producer);
+        return saveProducer;
     }
 
-    public Producer getProducer(Long id){
-        return producerRepository.findById(id).orElse(null);
-    }
+    public Producer updateProducer (Producer producer, Long id) throws Exception {
+        Producer producerExistent = producerRepository.findById(id).orElse(null);
 
-    public List<Producer> getAllProducer(){
-        return producerRepository.findAll();
-    }
-
-    public Producer updateProducer(Long id, Producer producer){
-        Producer auxProducer = producerRepository.findById(id).orElse(null);
-        if (auxProducer == null){
-            return null;
+        if (producerExistent == null){
+            throw new ProducerException(PropertiesSourceMessange.getMessageSource(""));
         }
-        producer.setId(auxProducer.getId());
-        return producerRepository.save(producer);
+
+        producerExistent = producer;
+        producerExistent.setId(id);
+        return producerRepository.save(producerExistent);
     }
 
-    public void deleteProducer(Long id) {
-        Producer auxProducer = producerRepository.findById(id).orElse(null);
-        if (auxProducer == null){
-            return;
+    public Producer deleteProducer(Long id) throws Exception {
+
+        Producer producer = producerRepository.findById(id).orElse(null);
+
+        if (producer == null){
+            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
         }
-        producerRepository.deleteById(id);
+
+        producerRepository.delete(producer);
+
+        return producer;
     }
+
 }

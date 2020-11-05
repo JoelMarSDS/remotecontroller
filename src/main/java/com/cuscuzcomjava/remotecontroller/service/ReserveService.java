@@ -1,138 +1,75 @@
 package com.cuscuzcomjava.remotecontroller.service;
 
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFundException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
+import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
+import com.cuscuzcomjava.remotecontroller.repository.ProducerRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ReserveRepository;
-
-import java.time.LocalDate;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.rmi.activation.ActivationException;
+import java.util.List;
 
 @Component
 public class ReserveService {
 
   @Autowired
-  ReserveRepository repository;
+  private ReserveRepository reserveRepository;
 
   @Autowired
-  ActressService actressService;
+  private ProducerRepository producerRepository;
 
   @Autowired
-  ProducerService producerService;
+  private ActressRepository actressRepository;
 
-  public List<Reserve> createReserve(Reserve reserve) {
-    Producer producer = producerService.getProducer(reserve.getProducer().getId());
-    Actress actress = actressService.getActress(reserve.getActress().getId());
-    if (producer == null) {
-      return null;
+  public Reserve saveReserve(Reserve reserve, Long actressId) throws Exception {
+    Actress actress = actressRepository.findById(actressId).orElse(null);
+    if (actress == null){
+      throw new ConflictException(PropertiesSourceMessange.getMessageSource(""));
     }
-
-    if(actress == null) {//verificando existência da atriz
-      return null;
-    }
-
-    if(!actress.getStatus()){ //impede reservar estado inativo
-      return null;
-    }
-
-    for (Reserve auxReserve: repository.findAllByProducerId(producer.getId())) { //impede a criação de reservas repetidas
-      if (auxReserve.getDateReserved().equals(reserve.getDateReserved())
-              && auxReserve.getActress().getId().equals(reserve.getActress().getId())){
-        return null;
-      }
-    }
-
-//    List checkDate =(List) repository.findAllByActressId(actress.getId()).stream()
-//        .filter(d -> d.getDateReserved() == reserve.getDateReserved());
-//    if (!checkDate.isEmpty()) {
-//      return getAllReserves(actress.getId());
-//    }
-
-    repository.save(reserve);
-    return repository.findAllByProducerId(producer.getId());
+    reserve.setActress(actress);
+    Reserve reserveSave = reserveRepository.save(reserve);
+    return reserveSave;
   }
 
-  public List<Reserve> getAllActressReserves(Long id) {
-    return repository.findAllByActressId(id);
-  }
-
-  public List<Reserve> getAllProducerReserves(Long id) {
-    return repository.findAllByProducerId(id);
-  }
-
-  public Integer getProducerReservesNumber(Long id){ //countReserves
-    return repository.findAll().size();
-  }
-
-  public Map<LocalDate, Long> getDatesMoreReserved(Long id){
-    List<LocalDate> dateList = new ArrayList<>();
-    for (Reserve auxReserve: repository.findAllByProducerId(id)) {
-      dateList.add(auxReserve.getDateReserved());
+  public List<Reserve> getListReserve() throws Exception {
+    List<Reserve> reserves = reserveRepository.findAll();
+    if (reserves.isEmpty()){
+      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("list.is.empty"));
     }
-    //contando e agrupando datas
-    Map<LocalDate, Long> dates =
-            dateList.stream().collect(
-                    Collectors.groupingBy(
-                            Function.identity(), Collectors.counting()
-                    )
-            );
-
-    Map<LocalDate, Long> datesOrdered = new LinkedHashMap<>();
-
-    //encontrando datas mais reservadas e colocando em ordem decrescente
-    dates.entrySet().stream()
-            .sorted(Map.Entry.<LocalDate, Long>comparingByValue()
-                    .reversed()).forEachOrdered(e -> datesOrdered.put(e.getKey(), e.getValue()));
-
-    return datesOrdered;
+    return reserves;
   }
 
-  public Map<String, Long> getActressesMoreReserved(Long id){
-    List<String> actressList = new ArrayList<>();
-    for (Reserve auxReserve: repository.findAllByProducerId(id)) {
-      actressList.add(auxReserve.getActress().getLogin());
+  public List<Reserve> getReserveActress(Long actressId) throws Exception {
+    Actress actress = actressRepository.findById(actressId).orElse(null);
+    if (actress == null){
+      throw new ActivationException(PropertiesSourceMessange.getMessageSource("actress.already.not.exists"));
     }
-    //contando e agrupando atrizes
-    Map<String, Long> dates =
-            actressList.stream().collect(
-                    Collectors.groupingBy(
-                            Function.identity(), Collectors.counting()
-                    )
-            );
-
-    Map<String, Long> actressOrdered = new LinkedHashMap<>();
-
-    //encontrando atrizes mais reservadas e colocando em ordem decrescente
-    dates.entrySet().stream()
-            .sorted(Map.Entry.<String, Long>comparingByValue()
-                    .reversed()).forEachOrdered(e -> actressOrdered.put(e.getKey(), e.getValue()));
-
-    return actressOrdered;
+    List<Reserve> reserves = reserveRepository.findByActress(actress);
+    return reserves;
   }
 
-  public List<Reserve> updateReserve(Long oldId, Reserve newReserve) {
-    Reserve reserve = repository.findById(oldId).orElse(null);
-    if (reserve == null){
-      return null;
+  public List<Reserve> getReserveProducer(Long id) throws Exception {
+    Producer producer = producerRepository.findById(id).orElse(null);
+    if (producer == null){
+      throw new ProducerException(PropertiesSourceMessange.getMessageSource(""));
     }
-
-    newReserve.setId(oldId);
-    repository.save(newReserve);
-    return getAllProducerReserves(newReserve.getProducer().getId());
+    List<Reserve> reserves = reserveRepository.findByProducer(producer);
+    return reserves;
   }
 
-  public List<Reserve> deleteReserve(Long id) {
-    Reserve reserve = repository.findById(id).orElse(null);
-    if (reserve == null) {
-      return null;
+  public Integer getCountReserveProducer(Long id) throws Exception {
+    Producer producer = producerRepository.findById(id).orElse(null);
+    if (producer == null){
+      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
     }
-
-    repository.deleteById(id);
-    return getAllProducerReserves(reserve.getProducer().getId());
+    Integer reserves = reserveRepository.findByProducer(producer).size();
+    return reserves;
   }
 }
