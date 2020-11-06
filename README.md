@@ -21,7 +21,7 @@
 
 :heavy_check_mark: Cadastro de novo perfil de usuário (ator/atriz);
 
-:heavy_check_mark: Login e logout admin (produtor) e de usuário (ator/atriz);
+:heavy_check_mark: Login e logout admin (produtor) e de usuário (ator/atriz); (WIP)
 
 :heavy_check_mark: Sistema de busca na qual um admin (produtor) pode visualizar as reservas que realizou;
 
@@ -29,7 +29,8 @@
 
 :heavy_check_mark: Visão do usuário (ator/atriz) mostrando suas datas já reservadas;
 
-:heavy_check_mark: Dashboard de Admin (produtor) mostrando o número de reservas realizado até o momento.
+:heavy_check_mark: Dashboard de Admin (produtor) mostrando o número de reservas realizado até o momento, datas com mais
+reservas e atores/atrizes mais reservados.
 
 
 ## API :key:
