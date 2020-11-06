@@ -30,7 +30,7 @@ public class ActressService {
             throw new ConflictException(PropertiesSourceMessange.getMessageSource("user.already.exists"));
         }
 
-        actress.getUser().setTypeUserEnumeration(TypeUserEnumeration.USER_COMUM);
+        actress.getUser().setTypeUserEnumeration(TypeUserEnumeration.COMMON_USER);
         User userComum = userRepository.save(actress.getUser());
 
         actress.setUser(userComum);
