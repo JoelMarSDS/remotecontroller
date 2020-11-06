@@ -3,7 +3,7 @@ package com.cuscuzcomjava.remotecontroller.entity.enumeration;
 public enum TypeUserEnumeration {
 
     ADMIN (1L),
-    USER_COMUM (2L);
+    COMMON_USER(2L);
 
     Long id;
 
