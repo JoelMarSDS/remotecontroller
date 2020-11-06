@@ -21,7 +21,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        String detail = PropertiesSourceMessange.getMessageSource("msg.erro.generic.user.final");
+        String detail = PropertiesSourceMessange.getMessageSource("error.msg.generic.user.final");
 
         ex.printStackTrace();
 
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> activationException(ActivationException e, WebRequest request){
 
         HttpStatus status = HttpStatus.NOT_FOUND;
-        String detail = PropertiesSourceMessange.getMessageSource("actress.already.not.exists") + " " + e.getMessage();
+        String detail = PropertiesSourceMessange.getMessageSource("actress.does.not.exists") + " " + e.getMessage();
 
 
         Problems problems = createProblemBuilder(status, detail);

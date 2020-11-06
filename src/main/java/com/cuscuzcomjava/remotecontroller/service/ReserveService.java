@@ -34,49 +34,39 @@ public class ReserveService {
   @Autowired
   private ActressRepository actressRepository;
 
-  public Reserve saveReserve(Reserve reserve, Long actressId) throws Exception {
-    Actress actress = actressRepository.findById(actressId).orElse(null);
-    if (actress == null){
-      throw new ConflictException(PropertiesSourceMessange.getMessageSource(""));
-    }
+  public Reserve saveReserve(Reserve reserve, Long actressId) throws ConflictException {
+    Actress actress = actressRepository.findById(actressId)
+        .orElseThrow(() -> new ConflictException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists")));
+
     reserve.setActress(actress);
-    Reserve reserveSave = reserveRepository.save(reserve);
-    return reserveSave;
+
+    return reserveRepository.save(reserve);
   }
 
-  public List<Reserve> getListReserve() throws Exception {
-    List<Reserve> reserves = reserveRepository.findAll();
-    if (reserves.isEmpty()){
-      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("list.is.empty"));
-    }
-    return reserves;
+  public List<Reserve> getListReserve() {
+    return reserveRepository.findAll();
   }
 
   public List<Reserve> getReserveActress(Long actressId) throws Exception {
-    Actress actress = actressRepository.findById(actressId).orElse(null);
-    if (actress == null){
-      throw new ActivationException(PropertiesSourceMessange.getMessageSource("actress.already.not.exists"));
-    }
-    List<Reserve> reserves = reserveRepository.findByActress(actress);
-    return reserves;
+    Actress actress = actressRepository.findById(actressId)
+        .orElseThrow(() -> new ActivationException(PropertiesSourceMessange.getMessageSource(
+            "actress.does.not.exists")));
+
+    return reserveRepository.findByActress(actress);
   }
 
-  public List<Reserve> getReserveProducer(Long id) throws Exception {
-    Producer producer = producerRepository.findById(id).orElse(null);
-    if (producer == null){
-      throw new ProducerException(PropertiesSourceMessange.getMessageSource(""));
-    }
-    List<Reserve> reserves = reserveRepository.findByProducer(producer);
-    return reserves;
+  public List<Reserve> getReserveProducer(Long id) throws ProducerException {
+    Producer producer = producerRepository.findById(id)
+        .orElseThrow(() -> new ProducerException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
+
+    return reserveRepository.findByProducer(producer);
   }
 
-  public Integer getCountReserveProducer(Long id) throws Exception {
-    Producer producer = producerRepository.findById(id).orElse(null);
-    if (producer == null){
-      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
-    }
-    Integer reserves = reserveRepository.findByProducer(producer).size();
-    return reserves;
+  public Integer getCountReserveProducer(Long id) throws EntityNotFundException {
+    Producer producer = producerRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
+
+    return reserveRepository.findByProducer(producer).size();
   }
 
   public Map<LocalDate, Long> getMoreReservedProducerDates(Long id){
