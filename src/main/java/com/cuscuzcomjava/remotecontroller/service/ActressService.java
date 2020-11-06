@@ -47,14 +47,6 @@ public class ActressService {
         return actresses;
     }
 
-    public List<Actress> getActressByStatus(boolean actressStatus) throws Exception {
-        List<Actress> actresses = actressRepository.findActressByStatus(actressStatus);
-        if (actresses.isEmpty()){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("list.is.empty"));
-        }
-        return actresses;
-    }
-
     public Actress updateActress (Actress actress, Long id) throws Exception {
         Actress actressExistent = actressRepository.findById(id).orElse(null);
 

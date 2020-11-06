@@ -29,35 +29,31 @@ public class ProducerService {
     @Autowired
     private ReserveRepository reserveRepository;
 
-    public Producer saveProducer(Producer producer) throws Exception {
+    public Producer saveProducer(Producer producer) throws ConflictException {
         User user = userRepository.findByLogin(producer.getUser().getLogin());
-        if (user == null){
-            throw new ConflictException(PropertiesSourceMessange.getMessageSource(""));
+
+        if (user != null){
+            throw new ConflictException(PropertiesSourceMessange.getMessageSource("user.already"
+                + ".exists"));
         }
+
         producer.getUser().setTypeUserEnumeration(TypeUserEnumeration.ADMIN);
-        Producer saveProducer = producerRepository.save(producer);
-        return saveProducer;
+
+        return producerRepository.save(producer);
     }
 
-    public Producer updateProducer (Producer producer, Long id) throws Exception {
-        Producer producerExistent = producerRepository.findById(id).orElse(null);
+    public Producer updateProducer (Producer producer, Long id) throws ProducerException {
+        Producer existentProducer = producerRepository.findById(id)
+            .orElseThrow(() -> new ProducerException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
-        if (producerExistent == null){
-            throw new ProducerException(PropertiesSourceMessange.getMessageSource(""));
-        }
-
-        producerExistent = producer;
-        producerExistent.setId(id);
-        return producerRepository.save(producerExistent);
+        existentProducer = producer;
+        existentProducer.setId(id);
+        return producerRepository.save(existentProducer);
     }
 
-    public Producer deleteProducer(Long id) throws Exception {
-
-        Producer producer = producerRepository.findById(id).orElse(null);
-
-        if (producer == null){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
-        }
+    public Producer deleteProducer(Long id) throws EntityNotFundException {
+        Producer producer = producerRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
         producerRepository.delete(producer);
 

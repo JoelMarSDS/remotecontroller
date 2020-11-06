@@ -74,4 +74,14 @@ public class ReserveController {
     return ResponseEntity.noContent().build();
   }
 
+  @GetMapping("getMoreReservedProducerDates/{producerId}")
+  public ResponseEntity<Map<LocalDate, Long>> getMoreReservedProducerDates(@PathVariable Long producerId) {
+    if (producerId != null){
+      Map<LocalDate, Long> moreReservedProducerDates = reserveService.getMoreReservedProducerDates(producerId);
+      return ResponseEntity.ok(moreReservedProducerDates);
+    }
+    return ResponseEntity.noContent().build();
+  }
+
+
 }

@@ -35,10 +35,10 @@ public class ProducerController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("deleteActress/{deleteActressId}")
-    public ResponseEntity<Producer> deleteActress(@PathVariable Long deleteActressId) throws Exception {
-        if (deleteActressId != null) {
-            Producer producer = producerService.deleteProducer(deleteActressId);
+    @DeleteMapping("deleteProducer/{deleteProducerId}")
+    public ResponseEntity<Producer> deleteProducer(@PathVariable Long deleteProducerId) throws Exception {
+        if (deleteProducerId != null) {
+            Producer producer = producerService.deleteProducer(deleteProducerId);
             return ResponseEntity.ok(producer);
         }
         return ResponseEntity.notFound().build();

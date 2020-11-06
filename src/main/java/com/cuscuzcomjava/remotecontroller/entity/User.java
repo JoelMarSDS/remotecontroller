@@ -1,6 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
 import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -27,7 +28,7 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Producer process;
-
+    @JsonIgnore
     public Long getId() {
         return id;
     }
@@ -59,7 +60,7 @@ public class User {
     public void setTypeUserEnumeration(TypeUserEnumeration typeUserEnumeration) {
         this.typeUserEnumeration = typeUserEnumeration;
     }
-
+    @JsonIgnore
     public Actress getActress() {
         return actress;
     }
@@ -67,7 +68,7 @@ public class User {
     public void setActress(Actress actress) {
         this.actress = actress;
     }
-
+    @JsonIgnore
     public Producer getProcess() {
         return process;
     }
