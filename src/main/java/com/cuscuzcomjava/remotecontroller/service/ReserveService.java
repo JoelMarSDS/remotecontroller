@@ -79,9 +79,10 @@ public class ReserveService {
     return reserves;
   }
 
-  public Map<LocalDate, Long> getMoreReservedProducerDates(Long id){
+  public Map<LocalDate, Long> getMoreReservedProducerDates(Long producerId) throws Exception{
     List<LocalDate> dateList = new ArrayList<>();
-    Producer producer = producerRepository.findById(id).orElse(null);
+    Producer producer = producerRepository.findById(producerId).orElse(null);
+
     if (producer == null){
       throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
     }
@@ -108,5 +109,45 @@ public class ReserveService {
     return datesOrdered;
   }
 
+  public Map<String, Long> getMoreReservedActresses(Long producerId){
+    List<String> actressList = new ArrayList<>();
+    Producer producer = producerRepository.findById(producerId).orElse(null);
+
+    if (producer == null){
+      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+    }
+
+    for (Reserve auxReserve: reserveRepository.findByProducer(producer)) {
+      actressList.add(auxReserve.getActress().getUser().getLogin());
+    }
+
+    //contando e agrupando atrizes
+    Map<String, Long> dates =
+            actressList.stream().collect(
+                    Collectors.groupingBy(
+                            Function.identity(), Collectors.counting()
+                    )
+            );
+
+    Map<String, Long> actressOrdered = new LinkedHashMap<>();
+
+    //encontrando atrizes mais reservadas e colocando em ordem decrescente
+    dates.entrySet().stream()
+            .sorted(Map.Entry.<String, Long>comparingByValue()
+                    .reversed()).forEachOrdered(e -> actressOrdered.put(e.getKey(), e.getValue()));
+
+    return actressOrdered;
+  }
+
+  public List<Reserve> updateReserve(Long oldId, Reserve newReserve) throws Exception{
+    Reserve reserve = reserveRepository.findById(oldId).orElse(null);
+    if (reserve == null){
+      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+    }
+
+    newReserve.setId(oldId);
+    reserveRepository.save(newReserve);
+    return getReserveProducer(newReserve.getProducer().getId());
+  }
 
 }

@@ -75,10 +75,19 @@ public class ReserveController {
   }
 
   @GetMapping("getMoreReservedProducerDates/{producerId}")
-  public ResponseEntity<Map<LocalDate, Long>> getMoreReservedProducerDates(@PathVariable Long producerId) {
+  public ResponseEntity<Map<LocalDate, Long>> getMoreReservedProducerDates(@PathVariable Long producerId) throws Exception{
     if (producerId != null){
       Map<LocalDate, Long> moreReservedProducerDates = reserveService.getMoreReservedProducerDates(producerId);
       return ResponseEntity.ok(moreReservedProducerDates);
+    }
+    return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("getMoreReservedActresses/{producerId}")
+  public ResponseEntity<Map<String, Long>> getMoreReservedActresses(@PathVariable Long producerId) throws Exception{
+    if (producerId != null){
+      Map<String, Long> moreReservedActresses = reserveService.getMoreReservedActresses(producerId);
+      return ResponseEntity.ok(moreReservedActresses);
     }
     return ResponseEntity.noContent().build();
   }
