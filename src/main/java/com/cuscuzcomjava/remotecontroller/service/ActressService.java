@@ -23,48 +23,61 @@ public class ActressService {
     @Autowired
     private UserRepository userRepository;
 
-    public Actress saveActress(Actress actress) throws ConflictException {
+    public Actress saveActress(Actress actress) throws Exception {
+
         User user = userRepository.findByLogin(actress.getUser().getLogin());
         if (user != null){
             throw new ConflictException(PropertiesSourceMessange.getMessageSource("user.already.exists"));
         }
 
         actress.getUser().setTypeUserEnumeration(TypeUserEnumeration.COMMON_USER);
-        user = userRepository.save(actress.getUser());
+        User userComum = userRepository.save(actress.getUser());
 
-        actress.setUser(user);
-        return actressRepository.save(actress);
+        actress.setUser(userComum);
+        Actress saveActress = actressRepository.save(actress);
+
+        return saveActress;
     }
 
-    public List<Actress> getListActress() {
-        return actressRepository.findAll();
+    public List<Actress> getListActress() throws Exception {
+        List<Actress> actresses = actressRepository.findAll();
+        if (actresses.isEmpty()){
+            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("list.is.empty"));
+        }
+        return actresses;
     }
 
-    public Actress updateActress (Actress actress, Long id) throws ActivationException {
-        Actress existentActress = actressRepository.findById(id)
-            .orElseThrow(() -> new ActivationException(PropertiesSourceMessange.getMessageSource(
-                "actress.does.not.exists")));
+    public Actress updateActress (Actress actress, Long id) throws Exception {
+        Actress actressExistent = actressRepository.findById(id).orElse(null);
 
-        existentActress = actress;
-        existentActress.setId(id);
-        return actressRepository.save(existentActress);
+        if (actressExistent == null){
+            throw new ActivationException(PropertiesSourceMessange.getMessageSource("actress.already.not.exists"));
+        }
+
+        actressExistent = actress;
+        actressExistent.setId(id);
+        return actressRepository.save(actressExistent);
     }
 
-    public Actress getById(Long id) throws ActivationException {
-        Actress actress = actressRepository.findById(id)
-            .orElseThrow(() -> new ActivationException(PropertiesSourceMessange.getMessageSource(
-            "actress.does.not.exists")));
-
+    public Actress getById(Long id) throws Exception {
+        Actress actress = actressRepository.findById(id).orElse(null);
+        if (actress == null){
+            throw new ActivationException(PropertiesSourceMessange.getMessageSource("actress.already.not.exists"));
+        }
         return actress;
     }
 
-    public Actress deleteActress(Long id) throws EntityNotFundException {
-        Actress actress = actressRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFundException(PropertiesSourceMessange.getMessageSource(
-            "user.does.not.exists")));
+    public Actress deleteActress(Long id) throws Exception {
+
+        Actress actress = actressRepository.findById(id).orElse(null);
+
+        if (actress == null){
+            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("user.already.not.exists"));
+        }
 
         actressRepository.delete(actress);
 
         return actress;
     }
+
 }

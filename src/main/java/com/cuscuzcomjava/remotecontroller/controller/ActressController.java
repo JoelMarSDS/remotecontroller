@@ -47,20 +47,29 @@ public class ActressController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/updateActress/{updateActressId}")
-    public ResponseEntity<Actress> updateActress(@RequestBody Actress actress, @PathVariable Long updateActressId) throws Exception {
-        if (actress != null && updateActressId != null) {
-            Actress actressUpdate = actressService.updateActress(actress, updateActressId);
-            return ResponseEntity.ok(actressUpdate);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
     @GetMapping("/actressId/{byId}")
     public ResponseEntity<Actress> getById(@PathVariable Long byId) throws Exception {
         if (byId != null){
             Actress actress = actressService.getById(byId);
             return ResponseEntity.ok(actress);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getActressByStatus")
+    public ResponseEntity<List<Actress>> getActressByStatus(@RequestParam ("status") boolean actressStatus) throws Exception{
+        List<Actress> actressesByStatus = actressService.getActressByStatus(actressStatus);
+        if (!actressesByStatus.isEmpty()){
+            return ResponseEntity.ok(actressesByStatus);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/updateActress/{updateActressId}")
+    public ResponseEntity<Actress> updateActress(@RequestBody Actress actress, @PathVariable Long updateActressId) throws Exception {
+        if (actress != null && updateActressId != null){
+            Actress actressUpdate = actressService.updateActress(actress, updateActressId);
+            return ResponseEntity.ok(actressUpdate);
         }
         return ResponseEntity.notFound().build();
     }
