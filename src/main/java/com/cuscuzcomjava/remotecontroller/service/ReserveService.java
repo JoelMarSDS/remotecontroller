@@ -150,4 +150,14 @@ public class ReserveService {
     return getReserveProducer(newReserve.getProducer().getId());
   }
 
+  public List<Reserve> deleteReserve(Long reserveId) throws Exception{
+    Reserve reserve = reserveRepository.findById(reserveId).orElse(null);
+    if (reserve == null) {
+      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+    }
+
+    reserveRepository.deleteById(reserveId);
+    return getReserveProducer(reserve.getProducer().getId());
+  }
+
 }
