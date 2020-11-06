@@ -1,5 +1,5 @@
 # Projeto GAMA ACADEMY + ACCENTURE - DESAFIO FINAL :rocket:
-# Group project of team CusCuz com Java :smile:
+# Team CusCuz com Java :smile:
 
 ## Team :facepunch:
 
