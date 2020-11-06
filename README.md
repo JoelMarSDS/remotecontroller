@@ -29,7 +29,7 @@
 
 :heavy_check_mark: Visão do usuário (ator/atriz) mostrando suas datas já reservadas;
 
-:heavy_check_mark: Dashboard de Admin (produtor) mostrando o número de reservas realizado até o momento, datas com mais
+:heavy_check_mark: Dashboard de Admin (produtor) mostrando o número de reservas realizadas até o momento, datas com mais
 reservas e atores/atrizes mais reservados.
 
 
