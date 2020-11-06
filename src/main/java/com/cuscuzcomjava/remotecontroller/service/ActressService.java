@@ -76,8 +76,16 @@ public class ActressService {
         }
 
         actressRepository.delete(actress);
-
         return actress;
     }
+
+    public List<Actress> getActressByStatus(boolean actressStatus) throws Exception {
+        List<Actress> actresses = actressRepository.findActressByStatus(actressStatus);
+        if (actresses.isEmpty()){
+            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("list.is.empty"));
+        }
+        return actresses;
+    }
+
 
 }
