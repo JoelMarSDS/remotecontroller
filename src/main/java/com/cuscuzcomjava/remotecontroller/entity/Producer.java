@@ -1,5 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class Producer{
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "producer")
     private List<Reserve> reserves;
 

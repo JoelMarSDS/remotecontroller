@@ -1,5 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class Actress {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "actress")
     private List<Reserve> reserves;
 
@@ -99,7 +102,7 @@ public class Actress {
     public void setUser(User user) {
         this.user = user;
     }
-
+    @JsonIgnore
     public List<Reserve> getReserves() {
         return reserves;
     }
