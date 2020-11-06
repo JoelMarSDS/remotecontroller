@@ -75,7 +75,7 @@ public class ReserveController {
   }
 
   @GetMapping("getMoreReservedProducerDates/{producerId}")
-  public ResponseEntity<Map<LocalDate, Long>> getMoreReservedProducerDates(@PathVariable Long producerId) {
+  public ResponseEntity<Map<LocalDate, Long>> getMoreReservedProducerDates(@PathVariable Long producerId) throws Exception{
     if (producerId != null){
       Map<LocalDate, Long> moreReservedProducerDates = reserveService.getMoreReservedProducerDates(producerId);
       return ResponseEntity.ok(moreReservedProducerDates);
@@ -83,5 +83,31 @@ public class ReserveController {
     return ResponseEntity.noContent().build();
   }
 
+  @GetMapping("getMoreReservedActresses/{producerId}")
+  public ResponseEntity<Map<String, Long>> getMoreReservedActresses(@PathVariable Long producerId) throws Exception{
+    if (producerId != null){
+      Map<String, Long> moreReservedActresses = reserveService.getMoreReservedActresses(producerId);
+      return ResponseEntity.ok(moreReservedActresses);
+    }
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping("/updateReserve/{reserveId}")
+  public ResponseEntity<List<Reserve>> updateReserve(@PathVariable Long reserveId, @RequestBody Reserve reserve) throws Exception{
+    if (reserveId != null){
+      List<Reserve> reserves = reserveService.updateReserve(reserveId, reserve);
+      return ResponseEntity.ok(reserves);
+    }
+    return ResponseEntity.noContent().build();
+  }
+
+  @DeleteMapping("/deleteReserve/{reserveId}")
+  public ResponseEntity<List<Reserve>> deleteReserve(@RequestParam Long reserveId) throws Exception{
+    if (reserveId != null){
+      List<Reserve> reserves = reserveService.deleteReserve(reserveId);
+      return ResponseEntity.ok(reserves);
+    }
+    return ResponseEntity.noContent().build();
+  }
 
 }
