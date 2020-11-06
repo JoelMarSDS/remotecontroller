@@ -92,5 +92,13 @@ public class ReserveController {
     return ResponseEntity.noContent().build();
   }
 
+  @PutMapping("/updateReserve/{reserveId}")
+  public ResponseEntity<List<Reserve>> updateReserve(@PathVariable Long reserveId, @RequestBody Reserve reserve) throws Exception{
+    if (reserveId != null){
+      List<Reserve> reserves = reserveService.updateReserve(reserveId, reserve);
+      return ResponseEntity.ok(reserves);
+    }
+    return ResponseEntity.noContent().build();
+  }
 
 }
