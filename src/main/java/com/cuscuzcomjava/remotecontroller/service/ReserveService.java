@@ -14,7 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.rmi.activation.ActivationException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class ReserveService {
@@ -72,4 +78,35 @@ public class ReserveService {
     Integer reserves = reserveRepository.findByProducer(producer).size();
     return reserves;
   }
+
+  public Map<LocalDate, Long> getMoreReservedProducerDates(Long id){
+    List<LocalDate> dateList = new ArrayList<>();
+    Producer producer = producerRepository.findById(id).orElse(null);
+    if (producer == null){
+      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+    }
+
+    for (Reserve auxReserve: reserveRepository.findByProducer(producer)) {
+      dateList.add(auxReserve.getReserveDate());
+    }
+
+    //contando e agrupando datas
+    Map<LocalDate, Long> dates =
+            dateList.stream().collect(
+                    Collectors.groupingBy(
+                            Function.identity(), Collectors.counting()
+                    )
+            );
+
+    Map<LocalDate, Long> datesOrdered = new LinkedHashMap<>();
+
+    //encontrando datas mais reservadas e colocando em ordem decrescente
+    dates.entrySet().stream()
+            .sorted(Map.Entry.<LocalDate, Long>comparingByValue()
+                    .reversed()).forEachOrdered(e -> datesOrdered.put(e.getKey(), e.getValue()));
+
+    return datesOrdered;
+  }
+
+
 }
