@@ -1,8 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.service;
 
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
-import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFundException;
-import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.entity.User;
@@ -33,27 +32,38 @@ public class ProducerService {
         User user = userRepository.findByLogin(producer.getUser().getLogin());
 
         if (user != null){
-            throw new ConflictException(PropertiesSourceMessange.getMessageSource("user.already"
-                + ".exists"));
+            throw new ConflictException(PropertiesSourceMessange.getMessageSource("producer.already.exists"));
         }
 
         producer.getUser().setTypeUserEnumeration(TypeUserEnumeration.ADMIN);
 
+        User userAdmin = userRepository.save(producer.getUser());
+        producer.setUser(userAdmin);
+
         return producerRepository.save(producer);
     }
 
-    public Producer updateProducer (Producer producer, Long id) throws ProducerException {
-        Producer existentProducer = producerRepository.findById(id)
-            .orElseThrow(() -> new ProducerException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
+    public Producer getProducerById(Long id) throws EntityNotFoundException {
+        return producerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource(
+                        "producer.does.not.exists")));
+    }
+
+    public Producer updateProducer(Producer producer, Long id) throws EntityNotFoundException {
+        Producer existentProducer = producerRepository.findById(id).orElse(null);
+
+        if (existentProducer == null) {
+            throw new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists"));
+        }
 
         existentProducer = producer;
         existentProducer.setId(id);
         return producerRepository.save(existentProducer);
     }
 
-    public Producer deleteProducer(Long id) throws EntityNotFundException {
+    public Producer deleteProducer(Long id) throws EntityNotFoundException {
         Producer producer = producerRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
+            .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
         producerRepository.delete(producer);
 

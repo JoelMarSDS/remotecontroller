@@ -1,7 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.service;
 
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
-import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFundException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
@@ -47,7 +47,7 @@ public class ReserveService {
     return reserveRepository.findAll();
   }
 
-  public List<Reserve> getReserveActress(Long actressId) throws Exception {
+  public List<Reserve> getReserveActress(Long actressId) throws ActivationException {
     Actress actress = actressRepository.findById(actressId)
         .orElseThrow(() -> new ActivationException(PropertiesSourceMessange.getMessageSource(
             "actress.does.not.exists")));
@@ -57,25 +57,24 @@ public class ReserveService {
 
   public List<Reserve> getReserveProducer(Long id) throws ProducerException {
     Producer producer = producerRepository.findById(id)
-        .orElseThrow(() -> new ProducerException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
+        .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
     return reserveRepository.findByProducer(producer);
   }
 
-  public Integer getCountReserveProducer(Long id) throws EntityNotFundException {
+  public Integer getCountReserveProducer(Long id) throws EntityNotFoundException {
     Producer producer = producerRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
+        .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
     return reserveRepository.findByProducer(producer).size();
   }
 
-  public Map<LocalDate, Long> getMoreReservedProducerDates(Long producerId) throws Exception{
+  public Map<LocalDate, Long> getMoreReservedProducerDates(Long producerId) throws
+      EntityNotFoundException {
     List<LocalDate> dateList = new ArrayList<>();
-    Producer producer = producerRepository.findById(producerId).orElse(null);
-
-    if (producer == null){
-      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
-    }
+    Producer producer = producerRepository.findById(producerId)
+        .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource(
+            "producer.does.not.exists")));
 
     for (Reserve auxReserve: reserveRepository.findByProducer(producer)) {
       dateList.add(auxReserve.getReserveDate());
@@ -99,13 +98,11 @@ public class ReserveService {
     return datesOrdered;
   }
 
-  public Map<String, Long> getMoreReservedActresses(Long producerId){
+  public Map<String, Long> getMoreReservedActresses(Long producerId) throws
+      EntityNotFoundException {
     List<String> actressList = new ArrayList<>();
-    Producer producer = producerRepository.findById(producerId).orElse(null);
-
-    if (producer == null){
-      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
-    }
+    Producer producer = producerRepository.findById(producerId)
+        .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
     for (Reserve auxReserve: reserveRepository.findByProducer(producer)) {
       actressList.add(auxReserve.getActress().getUser().getLogin());
@@ -129,22 +126,20 @@ public class ReserveService {
     return actressOrdered;
   }
 
-  public List<Reserve> updateReserve(Long oldId, Reserve newReserve) throws Exception{
-    Reserve reserve = reserveRepository.findById(oldId).orElse(null);
-    if (reserve == null){
-      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
-    }
+  public List<Reserve> updateReserve(Long oldId, Reserve newReserve) throws
+      EntityNotFoundException {
+    Reserve reserve = reserveRepository.findById(oldId)
+        .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource(
+            "reserve.does.not.exists")));
 
     newReserve.setId(oldId);
     reserveRepository.save(newReserve);
     return getReserveProducer(newReserve.getProducer().getId());
   }
 
-  public List<Reserve> deleteReserve(Long reserveId) throws Exception{
-    Reserve reserve = reserveRepository.findById(reserveId).orElse(null);
-    if (reserve == null) {
-      throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
-    }
+  public List<Reserve> deleteReserve(Long reserveId) throws EntityNotFoundException {
+    Reserve reserve = reserveRepository.findById(reserveId)
+        .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("reserve.does.not.exists")));
 
     reserveRepository.deleteById(reserveId);
     return getReserveProducer(reserve.getProducer().getId());

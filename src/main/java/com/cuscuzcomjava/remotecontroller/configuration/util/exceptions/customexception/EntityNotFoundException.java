@@ -1,8 +1,8 @@
 package com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception;
 
-public class ProducerException extends EntityNotFundException {
+public class EntityNotFoundException extends BusinessException{
 
-    public ProducerException(String message) {
+    public EntityNotFoundException(String message) {
         super(message);
     }
 
