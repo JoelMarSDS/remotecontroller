@@ -77,26 +77,38 @@ Como solicitado no projeto, o deploy será feito via Azure DevOps e está dispon
 ```
 Belo link
 ```
-## methods:
+## Methods:
 
-#### ActressController -
+#### ActressController
 
-:heavy_check_mark: POST/actress/create - método dedicado a inserir uma atriz.
+ 
+POST `/actress/create`
+
+Método dedicado a criação de uma atriz.
 
 :heavy_check_mark: GET/actress/listaActress - método para listar atriz.
 
 :heavy_check_mark: GET/actress/actressId/{byId} - método que consulta dados de uma atriz pelo Id. Parâmetro obrigatório: actressId - Id.
 
-:heavy_check_mark: GET/actress/actressStatus/{byStatus} - método que consulta dado atriz usando status como parâmetro. Parâmetro obrigatório: actressStatus - Status.
+GET `/actress/actressStatus/{byStatus}`  
+
+Método que consulta atriz usando status como parâmetro. Parâmetro obrigatório.
+
+#####Parameters:
+
+- *status*: Use 'true' para obter atrizes ativas na plataforma.
+
+#####Exemple: 
+`/actress/getActressesByStatus?status=false`
+`/actress/getActressesByStatus?status=true`
 
 :heavy_check_mark: PUT/actress/updateactress{updateactressId} - atualiza dado da atriz por Id. Parâmetro obrigatório: actressId - Id.
 
 :heavy_check_mark: DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
 
-Exemple: /actress/getActressesByStatus?status=false
-         /actress/getActressesByStatus?status=true
 
-#### ProducerController - 
+
+#### ProducerController 
 
 :heavy_check_mark: POST/producer/create: método dedicado a inserir uma produtor.
 
@@ -106,7 +118,7 @@ Exemple: /actress/getActressesByStatus?status=false
 
 :heavy_check_mark: DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
 
-#### ReserveController -
+#### ReserveController
 
 :heavy_check_mark: POST/reserve/saveReserve/{saveReserveId} - método dedicado a reservar data apartir de uma ID.Parâmetro obrigatório: saveReserveId - Id.
 
