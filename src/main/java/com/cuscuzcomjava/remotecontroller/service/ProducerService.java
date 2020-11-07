@@ -1,7 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.service;
 
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
-import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFundException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
@@ -56,9 +56,9 @@ public class ProducerService {
         return producerRepository.save(existentProducer);
     }
 
-    public Producer deleteProducer(Long id) throws EntityNotFundException {
+    public Producer deleteProducer(Long id) throws EntityNotFoundException {
         Producer producer = producerRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
+            .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
         producerRepository.delete(producer);
 

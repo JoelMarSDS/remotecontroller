@@ -1,7 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.service;
 
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
-import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFundException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.User;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.rmi.activation.ActivationException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,9 +60,9 @@ public class ActressService {
                 "actress.does.not.exists")));
     }
 
-    public Actress deleteActress(Long id) throws EntityNotFundException {
+    public Actress deleteActress(Long id) throws EntityNotFoundException {
         Actress actress = actressRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFundException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists")));
+            .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists")));
 
         actressRepository.deleteById(id);
         return actress;
