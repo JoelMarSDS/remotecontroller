@@ -1,8 +1,10 @@
 package com.cuscuzcomjava.remotecontroller.controller;
 
+
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
+import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.service.ProducerService;
 import java.net.URI;
@@ -33,9 +35,17 @@ public class ProducerController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/{byId}")
+    public ResponseEntity<Producer> getById(@PathVariable Long byId) throws ProducerException {
+        if (byId != null){
+            Producer producer = producerService.getProducerById(byId);
+            return ResponseEntity.ok(producer);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PutMapping("/update/{updateProducerId}")
-    public ResponseEntity<Producer> updateProducer(@RequestBody Producer producer,
-        @PathVariable Long updateProducerId) throws ProducerException, Exception {
+    public ResponseEntity<Producer> updateProducer(@RequestBody Producer producer, @PathVariable Long updateProducerId) throws ProducerException, Exception {
         if (producer != null && updateProducerId != null) {
             Producer producerUpdate = producerService.updateProducer(producer, updateProducerId);
             return ResponseEntity.ok(producerUpdate);
