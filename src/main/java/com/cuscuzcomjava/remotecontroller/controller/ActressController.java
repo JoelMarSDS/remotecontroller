@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +42,7 @@ public class ActressController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/listActress")
+    @GetMapping("/listActresses")
     public ResponseEntity<List<Actress>> getListActress() throws Exception {
         List<Actress> actresses = actressService.getListActress();
         if (!actresses.isEmpty()){
@@ -46,6 +50,16 @@ public class ActressController {
         }
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/getMostRelevantActresses")
+    public ResponseEntity<Map<Integer, Set<String>>> getMostRelevantActresses() throws Exception{
+        Map<Integer, Set<String>> actresses = actressService.getMostRelevantActresses();
+        if (!actresses.isEmpty()){
+            return ResponseEntity.ok(actresses);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
 
     @GetMapping("/actressId/{byId}")
     public ResponseEntity<Actress> getById(@PathVariable Long byId) throws Exception {
@@ -56,7 +70,7 @@ public class ActressController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/getActressByStatus")
+    @GetMapping("/getActressesByStatus")
     public ResponseEntity<List<Actress>> getActressByStatus(@RequestParam ("status") boolean actressStatus) throws Exception{
         List<Actress> actressesByStatus = actressService.getActressByStatus(actressStatus);
         if (!actressesByStatus.isEmpty()){
@@ -64,6 +78,7 @@ public class ActressController {
         }
         return ResponseEntity.noContent().build();
     }
+
 
     @PutMapping("/updateActress/{updateActressId}")
     public ResponseEntity<Actress> updateActress(@RequestBody Actress actress, @PathVariable Long updateActressId) throws Exception {

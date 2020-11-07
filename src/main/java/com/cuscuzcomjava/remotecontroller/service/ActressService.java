@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.rmi.activation.ActivationException;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ActressService {
@@ -75,7 +77,7 @@ public class ActressService {
             throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("user.already.not.exists"));
         }
 
-        actressRepository.delete(actress);
+        actressRepository.deleteById(id);
         return actress;
     }
 
@@ -87,5 +89,29 @@ public class ActressService {
         return actresses;
     }
 
+    public Map<Integer, Set<String>> getMostRelevantActresses() throws Exception{
+        List<Actress> actressesList = this.getListActress();
+
+        if (actressesList == null){
+            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+        }
+
+        // agrupando atrizes por relevância
+        Map<Integer, Set<String>> actressesMap =
+                actressesList.stream().collect(
+                        Collectors.groupingBy(Actress::getRelevance,
+                                Collectors.mapping(Actress::getName, Collectors.toSet())
+                        )
+                );
+
+        Map<Integer, Set<String>> actressesOrdered = new LinkedHashMap<>();
+
+        //colocando atrizes agrupadas de forma decrescente por relevância
+        actressesMap.entrySet().stream()
+                .sorted(Map.Entry.<Integer, Set<String>>comparingByKey()
+                        .reversed()).forEachOrdered(e -> actressesOrdered.put(e.getKey(), e.getValue()));
+
+        return actressesOrdered;
+    }
 
 }
