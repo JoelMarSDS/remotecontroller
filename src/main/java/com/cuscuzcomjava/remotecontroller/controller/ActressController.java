@@ -1,8 +1,12 @@
 package com.cuscuzcomjava.remotecontroller.controller;
 
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Reserve;
 import com.cuscuzcomjava.remotecontroller.service.ActressService;
+import java.rmi.activation.ActivationException;
+import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,7 +37,7 @@ public class ActressController {
     private ActressService actressService;
 
     @PostMapping("/create")
-    public ResponseEntity<Actress> saveActress(@RequestBody Actress actress) throws Exception {
+    public ResponseEntity<Actress> saveActress(@RequestBody Actress actress) throws ConflictException, Exception {
         if (actress != null) {
             Actress actressSave = actressService.saveActress(actress);
             URI uri = URI.create(String.format("/actress/create/%d",actressSave.getId()));
@@ -42,7 +46,7 @@ public class ActressController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/listActresses")
+    @GetMapping("/list")
     public ResponseEntity<List<Actress>> getListActress() throws Exception {
         List<Actress> actresses = actressService.getListActress();
         if (!actresses.isEmpty()){
@@ -51,17 +55,17 @@ public class ActressController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/actressId/{byId}")
-    public ResponseEntity<Actress> getById(@PathVariable Long byId) throws Exception {
-        if (byId != null){
-            Actress actress = actressService.getById(byId);
+    @GetMapping("/{id}")
+    public ResponseEntity<Actress> getById(@PathVariable Long id) throws ActivationException, Exception {
+        if (id != null){
+            Actress actress = actressService.getById(id);
             return ResponseEntity.ok(actress);
         }
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/getActressesByStatus")
-    public ResponseEntity<List<Actress>> getActressByStatus(@RequestParam ("status") boolean actressStatus) throws Exception{
+    @GetMapping("/getByStatus")
+    public ResponseEntity<List<Actress>> getActressByStatus(@RequestParam("status") boolean actressStatus) throws Exception {
         List<Actress> actressesByStatus = actressService.getActressByStatus(actressStatus);
         if (!actressesByStatus.isEmpty()){
             return ResponseEntity.ok(actressesByStatus);
@@ -69,8 +73,8 @@ public class ActressController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getMostRelevantActresses")
-    public ResponseEntity<Map<Integer, Set<String>>> getMostRelevantActresses() throws Exception{
+    @GetMapping("/getMostRelevant")
+    public ResponseEntity<Map<Integer, Set<String>>> getMostRelevantActresses() throws Exception {
         Map<Integer, Set<String>> actresses = actressService.getMostRelevantActresses();
         if (!actresses.isEmpty()){
             return ResponseEntity.ok(actresses);
@@ -78,8 +82,8 @@ public class ActressController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getLessRelevantActresses")
-    public ResponseEntity<Map<Integer, Set<String>>> getLessRelevantActresses() throws Exception{
+    @GetMapping("/getLessRelevant")
+    public ResponseEntity<Map<Integer, Set<String>>> getLessRelevantActresses() throws Exception {
         Map<Integer, Set<String>> actresses = actressService.getLessRelevantActresses();
         if (!actresses.isEmpty()){
             return ResponseEntity.ok(actresses);
@@ -87,8 +91,8 @@ public class ActressController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getMostExpensiveActresses")
-    public ResponseEntity<Map<Double, Set<String>>> getMostExpensiveActresses() throws Exception{
+    @GetMapping("/getMostExpensive")
+    public ResponseEntity<Map<Double, Set<String>>> getMostExpensiveActresses() throws Exception {
         Map<Double, Set<String>> actresses = actressService.getMostExpensiveActresses();
         if (!actresses.isEmpty()){
             return ResponseEntity.ok(actresses);
@@ -96,8 +100,8 @@ public class ActressController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getLessExpensiveActresses")
-    public ResponseEntity<Map<Double, Set<String>>> getLessExpensiveActresses() throws Exception{
+    @GetMapping("/getLessExpensive")
+    public ResponseEntity<Map<Double, Set<String>>> getLessExpensiveActresses() throws Exception {
         Map<Double, Set<String>> actresses = actressService.getLessExpensiveActresses();
         if (!actresses.isEmpty()){
             return ResponseEntity.ok(actresses);
@@ -106,8 +110,9 @@ public class ActressController {
     }
 
 
-    @PutMapping("/updateActress/{updateActressId}")
-    public ResponseEntity<Actress> updateActress(@RequestBody Actress actress, @PathVariable Long updateActressId) throws Exception {
+    @PutMapping("/update/{updateActressId}")
+    public ResponseEntity<Actress> updateActress(@RequestBody Actress actress,
+        @PathVariable Long updateActressId) throws ActivationException, Exception {
         if (actress != null && updateActressId != null){
             Actress actressUpdate = actressService.updateActress(actress, updateActressId);
             return ResponseEntity.ok(actressUpdate);
@@ -115,8 +120,9 @@ public class ActressController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("deleteActress/{deleteActressId}")
-    public ResponseEntity<Actress> deleteActress(@PathVariable Long deleteActressId) throws Exception {
+    @DeleteMapping("/delete")
+    public ResponseEntity<Actress> deleteActress(@PathParam("deleteActressId") Long deleteActressId) throws
+        EntityNotFoundException, Exception {
         if (deleteActressId != null) {
             Actress actress = actressService.deleteActress(deleteActressId);
             return ResponseEntity.ok(actress);
