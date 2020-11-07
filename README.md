@@ -63,11 +63,10 @@ Cada task tinha que ser feita em nova branch, após a conclusão, era aberta a p
 
 ## Requirements :
 
-Para iniciar a API será necessário ter em sua máquina instalado a versão JDK11 em sua máquina e configurar as variáveis de ambiente. Para configurar as variáveis basta colar no seu prompt de comando o link abaixo:
+Para iniciar a API será necessário ter em sua máquina instalado a versão JDK11 e configurar as variáveis de ambiente. Para instalar e configurar sua máquina o kit JDK11 está disponível no link abaixo:
 
-```
-setx -m JAVA_HOME "C:\Program Files\Java\jdk-xx.x.x"
-```
+``
+https://www.oracle.com/java/technologies/javase-jdk11-downloads.html``
 
 ## Deploy:
 Como solicitado no projeto, o deploy será feito via Azure DevOps e está disponível no seguinte link:
@@ -88,4 +87,4 @@ Exemple: /actress/getActressesByStatus?status=false
 
 
 ## Agradecimentos:
-Gostariamos de agradecer primeiramente a Accenture e a Gama por nos ter desafiado durante todo processo, pois sem as mesmas este projeto não existiriam. Queremos agradecer, também, nossos parentes e amigos por nos ter dado todo suporte neste ultimo e intenso mês.(piegas pra caramba)
+Gostariamos de agradecer primeiramente a Accenture e a Gama por nos terem desafiado durante todo processo, pois sem as mesmas este projeto não existiria. Queremos agradecer, também, nossos parentes e amigos por nos ter dado todo suporte neste ultimo e intenso mês.(piegas pra caramba)
