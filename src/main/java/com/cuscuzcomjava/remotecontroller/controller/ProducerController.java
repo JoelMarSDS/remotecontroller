@@ -3,19 +3,20 @@ package com.cuscuzcomjava.remotecontroller.controller;
 
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
-import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
-import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.service.ProducerService;
 import java.net.URI;
 import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/producer")
@@ -36,7 +37,7 @@ public class ProducerController {
     }
 
     @GetMapping("/{byId}")
-    public ResponseEntity<Producer> getById(@PathVariable Long byId) throws ProducerException {
+    public ResponseEntity<Producer> getById(@PathVariable Long byId) throws EntityNotFoundException {
         if (byId != null){
             Producer producer = producerService.getProducerById(byId);
             return ResponseEntity.ok(producer);
@@ -45,7 +46,7 @@ public class ProducerController {
     }
 
     @PutMapping("/update/{updateProducerId}")
-    public ResponseEntity<Producer> updateProducer(@RequestBody Producer producer, @PathVariable Long updateProducerId) throws ProducerException, Exception {
+    public ResponseEntity<Producer> updateProducer(@RequestBody Producer producer, @PathVariable Long updateProducerId) throws EntityNotFoundException, Exception {
         if (producer != null && updateProducerId != null) {
             Producer producerUpdate = producerService.updateProducer(producer, updateProducerId);
             return ResponseEntity.ok(producerUpdate);
