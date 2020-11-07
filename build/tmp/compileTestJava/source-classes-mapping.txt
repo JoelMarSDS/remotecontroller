@@ -1,0 +1,2 @@
+com/cuscuzcomjava/remotecontroller/RemotecontrollerApplicationTests.java
+ com.cuscuzcomjava.remotecontroller.RemotecontrollerApplicationTests
