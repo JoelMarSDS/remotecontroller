@@ -105,6 +105,7 @@ Exemple: /actress/getActressesByStatus?status=false
 
 
 :heavy_check_mark: DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
+
 #### ReserveController -
 
 :heavy_check_mark: POST/reserve/saveReserve/{saveReserveId} - método dedicado a reservar data apartir de uma ID.Parâmetro obrigatório: saveReserveId - Id.
