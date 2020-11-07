@@ -138,4 +138,28 @@ public class ActressService {
         return actressesOrdered;
     }
 
+    public Map<Double, Set<String>> getMostExpensiveActresses() throws Exception{
+        List<Actress> actressesList = this.getListActress();
+
+        if (actressesList == null){
+            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+        }
+
+        // agrupando atrizes por preço
+        Map<Double, Set<String>> actressesMap =
+                actressesList.stream().collect(
+                        Collectors.groupingBy(Actress::getPrice,
+                                Collectors.mapping(Actress::getName, Collectors.toSet())
+                        )
+                );
+
+        Map<Double, Set<String>> actressesOrdered = new LinkedHashMap<>();
+
+        //colocando atrizes agrupadas de forma decrescente por preço
+        actressesMap.entrySet().stream()
+                .sorted(Map.Entry.<Double, Set<String>>comparingByKey()
+                        .reversed()).forEachOrdered(e -> actressesOrdered.put(e.getKey(), e.getValue()));
+
+        return actressesOrdered;
+    }
 }

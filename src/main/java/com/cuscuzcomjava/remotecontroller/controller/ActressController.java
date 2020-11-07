@@ -69,6 +69,14 @@ public class ActressController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/getMostExpensiveActresses")
+    public ResponseEntity<Map<Double, Set<String>>> getMostExpensiveActresses() throws Exception{
+        Map<Double, Set<String>> actresses = actressService.getMostExpensiveActresses();
+        if (!actresses.isEmpty()){
+            return ResponseEntity.ok(actresses);
+        }
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/actressId/{byId}")
     public ResponseEntity<Actress> getById(@PathVariable Long byId) throws Exception {
