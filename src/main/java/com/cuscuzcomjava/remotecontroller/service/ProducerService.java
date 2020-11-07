@@ -47,7 +47,7 @@ public class ProducerService {
         return producerRepository.save(producer);
     }
 
-    public Producer getByProducerId(Long id) throws ProducerException {
+    public Producer getProducerById(Long id) throws ProducerException {
         return producerRepository.findById(id)
                 .orElseThrow(() -> new ProducerException(PropertiesSourceMessange.getMessageSource(
                         "producer.does.not.exists")));
