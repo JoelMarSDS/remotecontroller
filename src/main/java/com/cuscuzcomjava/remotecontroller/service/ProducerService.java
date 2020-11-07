@@ -38,6 +38,9 @@ public class ProducerService {
 
         producer.getUser().setTypeUserEnumeration(TypeUserEnumeration.ADMIN);
 
+        User userAdmin = userRepository.save(producer.getUser());
+        producer.setUser(userAdmin);
+
         return producerRepository.save(producer);
     }
 
