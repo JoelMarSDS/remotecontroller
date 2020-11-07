@@ -51,16 +51,6 @@ public class ActressController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getMostRelevantActresses")
-    public ResponseEntity<Map<Integer, Set<String>>> getMostRelevantActresses() throws Exception{
-        Map<Integer, Set<String>> actresses = actressService.getMostRelevantActresses();
-        if (!actresses.isEmpty()){
-            return ResponseEntity.ok(actresses);
-        }
-        return ResponseEntity.noContent().build();
-    }
-
-
     @GetMapping("/actressId/{byId}")
     public ResponseEntity<Actress> getById(@PathVariable Long byId) throws Exception {
         if (byId != null){
@@ -75,6 +65,42 @@ public class ActressController {
         List<Actress> actressesByStatus = actressService.getActressByStatus(actressStatus);
         if (!actressesByStatus.isEmpty()){
             return ResponseEntity.ok(actressesByStatus);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/getMostRelevantActresses")
+    public ResponseEntity<Map<Integer, Set<String>>> getMostRelevantActresses() throws Exception{
+        Map<Integer, Set<String>> actresses = actressService.getMostRelevantActresses();
+        if (!actresses.isEmpty()){
+            return ResponseEntity.ok(actresses);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/getLessRelevantActresses")
+    public ResponseEntity<Map<Integer, Set<String>>> getLessRelevantActresses() throws Exception{
+        Map<Integer, Set<String>> actresses = actressService.getLessRelevantActresses();
+        if (!actresses.isEmpty()){
+            return ResponseEntity.ok(actresses);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/getMostExpensiveActresses")
+    public ResponseEntity<Map<Double, Set<String>>> getMostExpensiveActresses() throws Exception{
+        Map<Double, Set<String>> actresses = actressService.getMostExpensiveActresses();
+        if (!actresses.isEmpty()){
+            return ResponseEntity.ok(actresses);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/getLessExpensiveActresses")
+    public ResponseEntity<Map<Double, Set<String>>> getLessExpensiveActresses() throws Exception{
+        Map<Double, Set<String>> actresses = actressService.getLessExpensiveActresses();
+        if (!actresses.isEmpty()){
+            return ResponseEntity.ok(actresses);
         }
         return ResponseEntity.noContent().build();
     }
