@@ -81,11 +81,11 @@ Belo link
 
 #### ActressController -
 
-:heavy_check_mark: POST/actress/create: método dedicado a inserir uma atriz.
+:heavy_check_mark: POST/actress/create - método dedicado a inserir uma atriz.
 
-:heavy_check_mark: GET/actress/listaActress- método para listar atriz.
+:heavy_check_mark: GET/actress/listaActress - método para listar atriz.
 
-:heavy_check_mark: GET/actress//actressId/{byId}- método que consulta dados de uma atriz pelo Id. Parâmetro obrigatório: actressId - Id.
+:heavy_check_mark: GET/actress/actressId/{byId} - método que consulta dados de uma atriz pelo Id. Parâmetro obrigatório: actressId - Id.
 
 :heavy_check_mark: GET/actress/actressStatus/{byStatus} - método que consulta dado atriz usando status como parâmetro. Parâmetro obrigatório: actressStatus - Status.
 
@@ -101,10 +101,23 @@ Exemple: /actress/getActressesByStatus?status=false
 :heavy_check_mark: POST/producer/create: método dedicado a inserir uma produtor.
 
 
-* PUT/producer/updateProducer/{updateProducerId} - atualiza dado(quais?) do produtor. Parâmetro obrigatório: actressId - Id.
+:heavy_check_mark: PUT/producer/updateProducer/{updateProducerId} - atualiza dado(quais?) do produtor. Parâmetro obrigatório: actressId - Id.
 
 
-* DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
+:heavy_check_mark: DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
+#### ReserveController -
+
+:heavy_check_mark: POST/reserve/saveReserve/{saveReserveId} - método dedicado a reservar data apartir de uma ID.Parâmetro obrigatório: saveReserveId - Id.
+
+:heavy_check_mark: GET/reserve/listReserve -  método que retorna lista de reservas.
+
+:heavy_check_mark: GET/reserve/listReserveActress/{reserveActressId} - recurso dedicado a consultar lista de reservas das atrizes através do Id. Parâmetro obrigatório: reserveActressId - Id.
+
+:heavy_check_mark: GET/reserve/listReserveProducer/{reserveProducerId} - recurso dedicado a retornar listas de reservas do produtor através do Id. Parâmetro obrigatório: reserveProducerId - Id.
+ 
+:heavy_check_mark: GET/reserve/countReserveProducer/{countReserveProducerId} -  método que consulta números de reservas feitas por produtor utilizando como parâmetro obrigatório countReserveProducerId - Id.
+
+:heavy_check_mark: GET/reserve/getMoreReservedProducerDates/{producerId} - recurso para retornar datas reservadas por um produtor usando como parâmetro producerId.
 
 ## Agradecimentos:
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh felis, ultrices eu cursus sit amet, rhoncus quis sem. In massa nisi, interdum in neque ac, aliquet laoreet massa. Vestibulum augue neque, faucibus sed magna non, auctor rhoncus ante. Vivamus dapibus venenatis bibendum. Nullam non ipsum ut nisl bibendum pellentesque sit amet dapibus dui. Donec molestie quam tellus, id vehicula justo tristique non. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam dapibus ac sem et semper. Etiam tincidunt nulla at neque tincidunt, eu scelerisque tellus imperdiet. Sed at fringilla odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mollis pharetra nisl quis auctor. Integer quis porttitor erat. In interdum arcu vel malesuada ornare. Ut feugiat, justo a luctus porttitor, justo libero consequat diam, a dapibus nulla erat a quam. Nam facilisis nibh nunc, elementum varius mi scelerisque et.
