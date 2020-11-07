@@ -98,11 +98,11 @@ Método que consulta atriz usando status como parâmetro. Parâmetro obrigatóri
 
 - **status**: Use 'true' para obter atrizes ativas na plataforma.
 
-##### Exemple: 
+##### Exemples: 
 
-`</actress/getActressesByStatus?status=false>`
+</actress/getActressesByStatus?status=false>
 
-`</actress/getActressesByStatus?status=true>`
+</actress/getActressesByStatus?status=true>
 
 :heavy_check_mark: PUT/actress/updateactress{updateactressId} - atualiza dado da atriz por Id. Parâmetro obrigatório: actressId - Id.
 
