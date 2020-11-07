@@ -6,16 +6,17 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Component
 public class PropertiesSourceMessange {
 
-    @Autowired
-    private static MessageSource messageSource;
+    private static final ResourceBundle MSG_PROPERTIES = ResourceBundle.getBundle("messages");
 
     public static String getMessageSource(String message) {
-        Locale locale = LocaleContextHolder.getLocale();
-        return messageSource.getMessage(message, null, locale);
+        if (MSG_PROPERTIES.containsKey(message)) {
+            return MSG_PROPERTIES.getString(message);
+        }
+        return "";
     }
-
 }

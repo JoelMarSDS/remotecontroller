@@ -1,0 +1,42 @@
+package rollbar;
+
+import com.rollbar.notifier.Rollbar;
+import com.rollbar.notifier.config.Config;
+import com.rollbar.notifier.config.ConfigBuilder;
+
+public class App {
+
+    private Rollbar rollbar;
+
+    public App() {
+        Config config = ConfigBuilder.withAccessToken("0bdf0c31228b488cae5a961988be1cc3")
+                        .environment("development")
+                        .codeVersion("1.0")
+                        .build();
+
+            this.rollbar = Rollbar.init(config);
+    }
+
+    private void registroErros() throws Exception {
+        try {
+            throw new NumberFormatException("O texto não pode ser convertido para numeros");
+        } catch (NumberFormatException e) {
+            rollbar.error(e, "Erro de Conversão");
+        } finally {
+            rollbar.close(true);
+            System.out.println("registro no rollbar criado");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        App app = new App();
+
+        try {
+            app.registroErros();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+}
