@@ -4,6 +4,7 @@ import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customex
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFundException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
+import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.entity.User;
 import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
@@ -13,6 +14,8 @@ import com.cuscuzcomjava.remotecontroller.repository.ReserveRepository;
 import com.cuscuzcomjava.remotecontroller.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.rmi.activation.ActivationException;
 
 @Component
 public class ProducerService {
@@ -42,6 +45,12 @@ public class ProducerService {
         producer.setUser(userAdmin);
 
         return producerRepository.save(producer);
+    }
+
+    public Producer getProducerById(Long id) throws ProducerException {
+        return producerRepository.findById(id)
+                .orElseThrow(() -> new ProducerException(PropertiesSourceMessange.getMessageSource(
+                        "producer.does.not.exists")));
     }
 
     public Producer updateProducer(Producer producer, Long id) throws ProducerException {
