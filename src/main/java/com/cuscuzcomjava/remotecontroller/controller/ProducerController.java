@@ -1,5 +1,7 @@
 package com.cuscuzcomjava.remotecontroller.controller;
 
+import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
+import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.service.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,15 @@ public class ProducerController {
         if (producer != null){
             Producer saveProducer = producerService.saveProducer(producer);
             return ResponseEntity.ok(saveProducer);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/producerId/{byId}")
+    public ResponseEntity<Producer> getById(@PathVariable Long byId) throws ProducerException {
+        if (byId != null){
+            Producer producer = producerService.getProducerById(byId);
+            return ResponseEntity.ok(producer);
         }
         return ResponseEntity.notFound().build();
     }
