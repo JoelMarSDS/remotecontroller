@@ -79,7 +79,7 @@ Belo link
 ```
 ## methods:
 
-# ActressController -
+### ActressController -
 
 POST/actress/create: método dedicado a inserir uma atriz.
 GET/actress/listaActress- método para listar atriz.
@@ -91,7 +91,7 @@ DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando
 Exemple: /actress/getActressesByStatus?status=false
          /actress/getActressesByStatus?status=true
 
-# ProducerController - 
+### ProducerController - 
 
 POST/producer/create: método dedicado a inserir uma produtor.
 PUT/producer/updateProducer/{updateProducerId} - atualiza dado(quais?) do produtor. Parâmetro obrigatório: actressId - Id.
