@@ -131,7 +131,7 @@ public class ActressService {
 
         Map<Integer, Set<String>> actressesOrdered = new LinkedHashMap<>();
 
-        //colocando atrizes agrupadas de forma decrescente por relevância
+        //colocando atrizes agrupadas de forma crescente por relevância
         actressesMap.entrySet().stream()
                 .sorted(Map.Entry.<Integer, Set<String>>comparingByKey()).forEachOrdered(e -> actressesOrdered.put(e.getKey(), e.getValue()));
 
@@ -159,6 +159,30 @@ public class ActressService {
         actressesMap.entrySet().stream()
                 .sorted(Map.Entry.<Double, Set<String>>comparingByKey()
                         .reversed()).forEachOrdered(e -> actressesOrdered.put(e.getKey(), e.getValue()));
+
+        return actressesOrdered;
+    }
+
+    public Map<Double, Set<String>> getLessExpensiveActresses() throws Exception{
+        List<Actress> actressesList = this.getListActress();
+
+        if (actressesList == null){
+            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+        }
+
+        // agrupando atrizes por preço
+        Map<Double, Set<String>> actressesMap =
+                actressesList.stream().collect(
+                        Collectors.groupingBy(Actress::getPrice,
+                                Collectors.mapping(Actress::getName, Collectors.toSet())
+                        )
+                );
+
+        Map<Double, Set<String>> actressesOrdered = new LinkedHashMap<>();
+
+        //colocando atrizes agrupadas de forma crescente por preço
+        actressesMap.entrySet().stream()
+                .sorted(Map.Entry.<Double, Set<String>>comparingByKey()).forEachOrdered(e -> actressesOrdered.put(e.getKey(), e.getValue()));
 
         return actressesOrdered;
     }
