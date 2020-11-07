@@ -82,7 +82,7 @@ Belo link
 #### ActressController
 
  
-POST `/actress/create`
+> POST `/actress/create`
 
 Método dedicado a criação de uma atriz.
 
@@ -90,7 +90,7 @@ Método dedicado a criação de uma atriz.
 
 :heavy_check_mark: GET/actress/actressId/{byId} - método que consulta dados de uma atriz pelo Id. Parâmetro obrigatório: actressId - Id.
 
-GET `/actress/actressStatus/{byStatus}`  
+> GET `/actress/actressStatus/{byStatus}`  
 
 Método que consulta atriz usando status como parâmetro. Parâmetro obrigatório.
 
@@ -100,9 +100,9 @@ Método que consulta atriz usando status como parâmetro. Parâmetro obrigatóri
 
 ##### Exemple: 
 
-`/actress/getActressesByStatus?status=false`
+`</actress/getActressesByStatus?status=false>`
 
-`/actress/getActressesByStatus?status=true`
+`</actress/getActressesByStatus?status=true>`
 
 :heavy_check_mark: PUT/actress/updateactress{updateactressId} - atualiza dado da atriz por Id. Parâmetro obrigatório: actressId - Id.
 
