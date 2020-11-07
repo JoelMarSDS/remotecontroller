@@ -114,4 +114,28 @@ public class ActressService {
         return actressesOrdered;
     }
 
+    public Map<Integer, Set<String>> getLessRelevantActresses() throws Exception{
+        List<Actress> actressesList = this.getListActress();
+
+        if (actressesList == null){
+            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+        }
+
+        // agrupando atrizes por relevância
+        Map<Integer, Set<String>> actressesMap =
+                actressesList.stream().collect(
+                        Collectors.groupingBy(Actress::getRelevance,
+                                Collectors.mapping(Actress::getName, Collectors.toSet())
+                        )
+                );
+
+        Map<Integer, Set<String>> actressesOrdered = new LinkedHashMap<>();
+
+        //colocando atrizes agrupadas de forma decrescente por relevância
+        actressesMap.entrySet().stream()
+                .sorted(Map.Entry.<Integer, Set<String>>comparingByKey()).forEachOrdered(e -> actressesOrdered.put(e.getKey(), e.getValue()));
+
+        return actressesOrdered;
+    }
+
 }
