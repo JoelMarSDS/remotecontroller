@@ -39,6 +39,10 @@ reservas e atores/atrizes mais reservados.
 
 :heavy_check_mark: Utilizamos o banco de dados H2.
 
+:heavy_check_mark: Utilizamos como ferramenta de gerenciamento de dependencia de projeto o Gradle.
+
+:heavy_check_mark: No quesito teste para Deloper foram tratados as excessões.
+
 
 ## Planning :scroll:
 
@@ -57,3 +61,31 @@ reservas e atores/atrizes mais reservados.
 Mantivêmos a main como branch principal.
 Cada task tinha que ser feita em nova branch, após a conclusão, era aberta a pull Request e pelo menos dois membros da equipe precisavam fazer a review e aprovar o desenvolvimento, assim, podendo mergear para a branch principal.
 
+## Requirements :
+
+Para iniciar a API será necessário ter em sua máquina instalado a versão JDK11 em sua máquina e configurar as variáveis de ambiente. Para configurar as variáveis basta colar no seu prompt de comando o link abaixo:
+
+```
+setx -m JAVA_HOME "C:\Program Files\Java\jdk-xx.x.x"
+```
+
+## Deploy:
+Como solicitado no projeto, o deploy será feito via Azure DevOps e está disponível no seguinte link:
+
+```
+Belo link
+```
+## methods:
+
+POST/actress/create: metodo dedicado a inserir uma atriz.
+GET/actress/listaActress- metodo que lista atriz.
+GET/actress//actressId/{byId}- metodo que lista atriz. Parametro obrigatório: actressId - Id.
+GET/actress//actressStatus/{byStatus} - metodo que lista atriz. Parametro obrigatório: actressStatus - Status.
+PUT/actress/updateactress{updateactressId} - atualiza dado da atriz. Parametro obrigatório: actressId - Id.
+
+Exemple: /actress/getActressesByStatus?status=false
+         /actress/getActressesByStatus?status=true
+
+
+## Agradecimentos:
+Gostariamos de agradecer primeiramente a Accenture e a Gama por nos ter desafiado durante todo processo, pois sem as mesmas este projeto não existiriam. Queremos agradecer, também, nossos parentes e amigos por nos ter dado todo suporte neste ultimo e intenso mês.(piegas pra caramba)
