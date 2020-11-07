@@ -81,24 +81,24 @@ Belo link
 
 #### ActressController -
 
-* POST/actress/create: método dedicado a inserir uma atriz.
+:heavy_check_mark: POST/actress/create: método dedicado a inserir uma atriz.
 
-* GET/actress/listaActress- método para listar atriz.
+:heavy_check_mark: GET/actress/listaActress- método para listar atriz.
 
-* GET/actress//actressId/{byId}- método que consulta dados de uma atriz pelo Id. Parâmetro obrigatório: actressId - Id.
+:heavy_check_mark: GET/actress//actressId/{byId}- método que consulta dados de uma atriz pelo Id. Parâmetro obrigatório: actressId - Id.
 
-* GET/actress/actressStatus/{byStatus} - método que consulta dado atriz usando status como parâmetro. Parâmetro obrigatório: actressStatus - Status.
+:heavy_check_mark: GET/actress/actressStatus/{byStatus} - método que consulta dado atriz usando status como parâmetro. Parâmetro obrigatório: actressStatus - Status.
 
-* PUT/actress/updateactress{updateactressId} - atualiza dado da atriz por Id. Parâmetro obrigatório: actressId - Id.
+:heavy_check_mark: PUT/actress/updateactress{updateactressId} - atualiza dado da atriz por Id. Parâmetro obrigatório: actressId - Id.
 
-* DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
+:heavy_check_mark: DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
 
 Exemple: /actress/getActressesByStatus?status=false
          /actress/getActressesByStatus?status=true
 
 #### ProducerController - 
 
-* POST/producer/create: método dedicado a inserir uma produtor.
+:heavy_check_mark: POST/producer/create: método dedicado a inserir uma produtor.
 
 
 * PUT/producer/updateProducer/{updateProducerId} - atualiza dado(quais?) do produtor. Parâmetro obrigatório: actressId - Id.
