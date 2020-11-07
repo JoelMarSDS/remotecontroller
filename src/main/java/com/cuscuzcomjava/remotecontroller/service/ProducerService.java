@@ -33,8 +33,7 @@ public class ProducerService {
         User user = userRepository.findByLogin(producer.getUser().getLogin());
 
         if (user != null){
-            throw new ConflictException(PropertiesSourceMessange.getMessageSource("user.already"
-                + ".exists"));
+            throw new ConflictException(PropertiesSourceMessange.getMessageSource("producer.already.exists"));
         }
 
         producer.getUser().setTypeUserEnumeration(TypeUserEnumeration.ADMIN);
@@ -42,9 +41,12 @@ public class ProducerService {
         return producerRepository.save(producer);
     }
 
-    public Producer updateProducer (Producer producer, Long id) throws ProducerException {
-        Producer existentProducer = producerRepository.findById(id)
-            .orElseThrow(() -> new ProducerException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
+    public Producer updateProducer(Producer producer, Long id) throws ProducerException {
+        Producer existentProducer = producerRepository.findById(id).orElse(null);
+
+        if (existentProducer == null) {
+            throw new ProducerException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists"));
+        }
 
         existentProducer = producer;
         existentProducer.setId(id);

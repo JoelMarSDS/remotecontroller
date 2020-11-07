@@ -25,75 +25,59 @@ public class ActressService {
     @Autowired
     private UserRepository userRepository;
 
-    public Actress saveActress(Actress actress) throws Exception {
-
+    public Actress saveActress(Actress actress) throws ConflictException {
         User user = userRepository.findByLogin(actress.getUser().getLogin());
         if (user != null){
-            throw new ConflictException(PropertiesSourceMessange.getMessageSource("user.already.exists"));
+            throw new ConflictException(PropertiesSourceMessange.getMessageSource("actress.already.exists"));
         }
 
         actress.getUser().setTypeUserEnumeration(TypeUserEnumeration.COMMON_USER);
         User userComum = userRepository.save(actress.getUser());
 
         actress.setUser(userComum);
-        Actress saveActress = actressRepository.save(actress);
+        return actressRepository.save(actress);
 
-        return saveActress;
     }
 
-    public List<Actress> getListActress() throws Exception {
-        List<Actress> actresses = actressRepository.findAll();
-        if (actresses.isEmpty()){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("list.is.empty"));
-        }
-        return actresses;
+    public List<Actress> getListActress() {
+        return actressRepository.findAll();
     }
 
-    public Actress updateActress (Actress actress, Long id) throws Exception {
-        Actress actressExistent = actressRepository.findById(id).orElse(null);
+    public Actress updateActress (Actress actress, Long id) throws ActivationException {
+        Actress existentActress = actressRepository.findById(id).orElse(null);
 
-        if (actressExistent == null){
-            throw new ActivationException(PropertiesSourceMessange.getMessageSource("actress.already.not.exists"));
+        if (existentActress == null) {
+            throw new ActivationException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists"));
         }
 
-        actressExistent = actress;
-        actressExistent.setId(id);
-        return actressRepository.save(actressExistent);
+        existentActress = actress;
+        existentActress.setId(id);
+        return actressRepository.save(existentActress);
     }
 
-    public Actress getById(Long id) throws Exception {
-        Actress actress = actressRepository.findById(id).orElse(null);
-        if (actress == null){
-            throw new ActivationException(PropertiesSourceMessange.getMessageSource("actress.already.not.exists"));
-        }
-        return actress;
+    public Actress getById(Long id) throws ActivationException {
+        return actressRepository.findById(id)
+            .orElseThrow(() -> new ActivationException(PropertiesSourceMessange.getMessageSource(
+                "actress.does.not.exists")));
     }
 
-    public Actress deleteActress(Long id) throws Exception {
-
-        Actress actress = actressRepository.findById(id).orElse(null);
-
-        if (actress == null){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("user.already.not.exists"));
-        }
+    public Actress deleteActress(Long id) throws EntityNotFundException {
+        Actress actress = actressRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFundException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists")));
 
         actressRepository.deleteById(id);
         return actress;
     }
 
-    public List<Actress> getActressByStatus(boolean actressStatus) throws Exception {
-        List<Actress> actresses = actressRepository.findActressByStatus(actressStatus);
-        if (actresses.isEmpty()){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource("list.is.empty"));
-        }
-        return actresses;
+    public List<Actress> getActressByStatus(boolean actressStatus) {
+        return actressRepository.findActressByStatus(actressStatus);
     }
 
-    public Map<Integer, Set<String>> getMostRelevantActresses() throws Exception{
+    public Map<Integer, Set<String>> getMostRelevantActresses() {
         List<Actress> actressesList = this.getListActress();
 
-        if (actressesList == null){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+        if (actressesList.isEmpty()){
+            return null;
         }
 
         // agrupando atrizes por relevância
@@ -114,11 +98,11 @@ public class ActressService {
         return actressesOrdered;
     }
 
-    public Map<Integer, Set<String>> getLessRelevantActresses() throws Exception{
+    public Map<Integer, Set<String>> getLessRelevantActresses() {
         List<Actress> actressesList = this.getListActress();
 
-        if (actressesList == null){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+        if (actressesList.isEmpty()){
+            return null;
         }
 
         // agrupando atrizes por relevância
@@ -138,11 +122,11 @@ public class ActressService {
         return actressesOrdered;
     }
 
-    public Map<Double, Set<String>> getMostExpensiveActresses() throws Exception{
+    public Map<Double, Set<String>> getMostExpensiveActresses() {
         List<Actress> actressesList = this.getListActress();
 
-        if (actressesList == null){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+        if (actressesList.isEmpty()){
+            return null;
         }
 
         // agrupando atrizes por preço
@@ -163,11 +147,11 @@ public class ActressService {
         return actressesOrdered;
     }
 
-    public Map<Double, Set<String>> getLessExpensiveActresses() throws Exception{
+    public Map<Double, Set<String>> getLessExpensiveActresses() {
         List<Actress> actressesList = this.getListActress();
 
-        if (actressesList == null){
-            throw new EntityNotFundException(PropertiesSourceMessange.getMessageSource(""));
+        if (actressesList.isEmpty()){
+            return null;
         }
 
         // agrupando atrizes por preço
