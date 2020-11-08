@@ -64,7 +64,7 @@ reservas e atores/atrizes mais reservados.
 Mantivêmos a main como branch principal.
 Cada task tinha que ser feita em nova branch, após a conclusão, era aberta a pull Request e pelo menos dois membros da equipe precisavam fazer a review e aprovar o desenvolvimento, assim, podendo mergear para a branch principal.
 
-## Requirements :
+## Requirements:
 
 Para iniciar a API será necessário ter em sua máquina instalado a versão JDK11 e configurar as variáveis de ambiente. Para instalar e configurar sua máquina o kit JDK11 está disponível no link abaixo:
 
@@ -86,13 +86,17 @@ Belo link
 
 Método dedicado a criação de uma atriz.
 
-:heavy_check_mark: GET/actress/listaActress - método para listar atriz.
+> GET `/actress/listaActress`
 
-:heavy_check_mark: GET/actress/actressId/{byId} - método que consulta dados de uma atriz pelo Id. Parâmetro obrigatório: actressId - Id.
+Método para listar atriz.
 
-> GET `/actress/actressStatus/{byStatus}`  
+> GET `/actress/actressId/{byId}`
 
-Método que consulta atriz usando status como parâmetro. Parâmetro obrigatório.
+Método que consulta dados de uma atriz pelo Id. 
+
+> GET `/actress/actressStatus/{byStatus}`
+
+Método que consulta atriz usando status como parâmetro.
 
 ##### Parameters:
 
@@ -104,35 +108,58 @@ Método que consulta atriz usando status como parâmetro. Parâmetro obrigatóri
 
 ` /actress/getActressesByStatus?status=true `
 
-:heavy_check_mark: PUT/actress/updateactress{updateactressId} - atualiza dado da atriz por Id. Parâmetro obrigatório: actressId - Id.
+> PUT `/actress/updateactress{updateactressId}` 
 
-:heavy_check_mark: DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
+Atualiza dado da atriz por Id. 
 
+> DELETE `/actress/deleteActress/{deleteActressId}` 
 
+Método que deleta atriz usando como paramentro de Id. 
 
 #### ProducerController 
 
-:heavy_check_mark: POST/producer/create: método dedicado a inserir uma produtor.
+> POST `/producer/create:`
+
+Método dedicado a inserir uma produtor.
 
 
-:heavy_check_mark: PUT/producer/updateProducer/{updateProducerId} - atualiza dado(quais?) do produtor. Parâmetro obrigatório: actressId - Id.
+> PUT `/producer/updateProducer/{updateProducerId}` 
+
+Atualiza dados do produtor.
 
 
-:heavy_check_mark: DELETE/actress/deleteActress/{deleteActressId} - método que deleta atriz usando como paramentro de Id. Parâmetro obrigatório: deleteActressId - Id.
+> DELETE `/actress/deleteActress/{deleteActressId}` 
+
+Método que deleta atriz usando como paramentro de Id. 
 
 #### ReserveController
 
-:heavy_check_mark: POST/reserve/saveReserve/{saveReserveId} - método dedicado a reservar data apartir de uma ID.Parâmetro obrigatório: saveReserveId - Id.
+> POST `/reserve/saveReserve/{saveReserveId}`
 
-:heavy_check_mark: GET/reserve/listReserve -  método que retorna lista de reservas.
+Método dedicado a reservar data apartir de uma ID.
 
-:heavy_check_mark: GET/reserve/listReserveActress/{reserveActressId} - recurso dedicado a consultar lista de reservas das atrizes através do Id. Parâmetro obrigatório: reserveActressId - Id.
+> GET `/reserve/listReserve` 
 
-:heavy_check_mark: GET/reserve/listReserveProducer/{reserveProducerId} - recurso dedicado a retornar listas de reservas do produtor através do Id. Parâmetro obrigatório: reserveProducerId - Id.
- 
-:heavy_check_mark: GET/reserve/countReserveProducer/{countReserveProducerId} -  método que consulta números de reservas feitas por produtor utilizando como parâmetro obrigatório countReserveProducerId - Id.
+Método que retorna lista de reservas.
 
-:heavy_check_mark: GET/reserve/getMoreReservedProducerDates/{producerId} - recurso para retornar datas reservadas por um produtor usando como parâmetro producerId.
+> GET `/reserve/listReserveActress/{reserveActressId}` 
+
+Recurso dedicado a consultar lista de reservas das atrizes através do Id.
+
+> GET `/reserve/listReserveProducer/{reserveProducerId}`
+
+Recurso dedicado a retornar listas de reservas do produtor através do Id. 
+
+> GET `/reserve/countReserveProducer/{countReserveProducerId}`
+
+Método que consulta números de reservas feitas por produtor.
+
+> GET `/reserve/getMoreReservedProducerDates/{producerId}` - 
+
+Recurso para retornar datas reservadas por um produtor.
 
 ## Agradecimentos:
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nibh felis, ultrices eu cursus sit amet, rhoncus quis sem. In massa nisi, interdum in neque ac, aliquet laoreet massa. Vestibulum augue neque, faucibus sed magna non, auctor rhoncus ante. Vivamus dapibus venenatis bibendum. Nullam non ipsum ut nisl bibendum pellentesque sit amet dapibus dui. Donec molestie quam tellus, id vehicula justo tristique non. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam dapibus ac sem et semper. Etiam tincidunt nulla at neque tincidunt, eu scelerisque tellus imperdiet. Sed at fringilla odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mollis pharetra nisl quis auctor. Integer quis porttitor erat. In interdum arcu vel malesuada ornare. Ut feugiat, justo a luctus porttitor, justo libero consequat diam, a dapibus nulla erat a quam. Nam facilisis nibh nunc, elementum varius mi scelerisque et.
+Nosso grupo trabalhou arduamente para resolução do desafio, desafio este que só fomos capazes de desenvolver graças a imersão Accademia Accenture. 
+Aprendemos neste desafio como aplicar, gerir e desenvolver um projeto em equipe, somando forças para atingir nosso objetivo em comum.
+Então nossos agradecimentos ficam aqui registrados à toda equipe Gama Academy + Accenture e gostariámos de complementar que o programa cumpriu com o objetivo proposto de treinar pessoas e prepará-las para o mundo "coder", transformando nossa carreira dentro da Accenture. A melhor empresa multinacional de consultoria de gestão, tecnologia da informação e outsourcing do mundo. 
+Tivemos realmente um treinamento intenso e com muito aprendizado e oportunidade de desenvolvimento, fica aqui então registrado nossos mais sinceros agradecimentos! GRATIDÃO :purple_heart:
