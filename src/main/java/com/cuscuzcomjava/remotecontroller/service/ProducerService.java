@@ -5,14 +5,12 @@ import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customex
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
-import com.cuscuzcomjava.remotecontroller.entity.Reserve;
 import com.cuscuzcomjava.remotecontroller.entity.User;
 import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
 import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ProducerRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ReserveRepository;
 import com.cuscuzcomjava.remotecontroller.repository.UserRepository;
-import java.rmi.activation.ActivationException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedList;
