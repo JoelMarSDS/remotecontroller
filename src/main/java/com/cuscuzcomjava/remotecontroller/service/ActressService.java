@@ -54,8 +54,16 @@ public class ActressService {
             throw new ActivationException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists"));
         }
 
+        User existentUser = userRepository.findById(existentActress.getUser().getId()).orElse(null);
+
+        existentUser = actress.getUser();
+        existentUser.setId(existentActress.getUser().getId());
+        existentUser.setTypeUserEnumeration(existentActress.getUser().getTypeUserEnumeration());
+        userRepository.save(existentUser);
+
         existentActress = actress;
         existentActress.setId(id);
+
         return actressRepository.save(existentActress);
     }
 
@@ -70,6 +78,7 @@ public class ActressService {
             .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists")));
 
         actressRepository.deleteById(id);
+        userRepository.deleteById(actress.getUser().getId());
         return actress;
     }
 

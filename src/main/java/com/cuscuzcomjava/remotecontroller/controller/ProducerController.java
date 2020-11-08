@@ -60,10 +60,10 @@ public class ProducerController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Producer> deleteProducer(@PathParam("deleteProducerId") Long deleteProducerId) throws
+    public ResponseEntity<Producer> deleteProducer(@PathParam("id") Long id) throws
         EntityNotFoundException, Exception {
-        if (deleteProducerId != null) {
-            Producer producer = producerService.deleteProducer(deleteProducerId);
+        if (id != null) {
+            Producer producer = producerService.deleteProducer(id);
             return ResponseEntity.ok(producer);
         }
 

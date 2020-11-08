@@ -5,14 +5,12 @@ import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customex
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
-import com.cuscuzcomjava.remotecontroller.entity.Reserve;
 import com.cuscuzcomjava.remotecontroller.entity.User;
 import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
 import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ProducerRepository;
 import com.cuscuzcomjava.remotecontroller.repository.ReserveRepository;
 import com.cuscuzcomjava.remotecontroller.repository.UserRepository;
-import java.rmi.activation.ActivationException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -67,6 +65,13 @@ public class ProducerService {
         Producer existentProducer = producerRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
+        User existentUser = userRepository.findById(existentProducer.getUser().getId()).orElse(null);
+
+        existentUser = producer.getUser();
+        existentUser.setId(existentProducer.getUser().getId());
+        existentUser.setTypeUserEnumeration(existentProducer.getUser().getTypeUserEnumeration());
+        userRepository.save(existentUser);
+        
         existentProducer = producer;
         existentProducer.setId(id);
         return producerRepository.save(existentProducer);
@@ -77,7 +82,7 @@ public class ProducerService {
             .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
         producerRepository.delete(producer);
-
+        userRepository.deleteById(producer.getUser().getId());
         return producer;
     }
 
@@ -86,7 +91,7 @@ public class ProducerService {
         int matchQuantity = 0;
 
         List<Actress> availableActresses = actressService.getAll().stream()
-            .filter(actress -> actress.getGenre().contains(genre))
+            .filter(actress -> actress.getGenre().toLowerCase().equals(genre.toLowerCase()))
             .filter(actress -> actressService.isAvailableAtDate(actress.getId(), date))
             .collect(Collectors.toList());
         Collections.shuffle(availableActresses);
