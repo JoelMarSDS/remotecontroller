@@ -29,11 +29,11 @@ public class ReserveController {
   @Autowired
   private ReserveService reserveService;
 
-  @PostMapping("/save/{saveReserveId}")
+  @PostMapping("/save/{actressId}")
   public ResponseEntity<Reserve> saveReserve(@RequestBody Reserve reserve,
-      @PathVariable Long saveReserveId) throws ConflictException, Exception {
+      @PathVariable Long actressId) throws ConflictException, Exception {
     if (reserve != null) {
-      Reserve saveReserve = reserveService.saveReserve(reserve, saveReserveId);
+      Reserve saveReserve = reserveService.saveReserve(reserve, actressId);
       URI uri = URI.create(String.format("/reserve/create/%d",reserve.getId()));
       return ResponseEntity.created(uri).body(reserve);
     }

@@ -2,7 +2,6 @@ package com.cuscuzcomjava.remotecontroller.service;
 
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
-import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ProducerException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
@@ -55,7 +54,7 @@ public class ReserveService {
     return reserveRepository.findByActress(actress);
   }
 
-  public List<Reserve> getReserveProducer(Long id) throws ProducerException {
+  public List<Reserve> getReserveProducer(Long id) throws EntityNotFoundException {
     Producer producer = producerRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
