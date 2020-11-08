@@ -55,7 +55,7 @@ public class ReserveService {
     return reserveRepository.findByActress(actress);
   }
 
-  public List<Reserve> getReserveProducer(Long id) throws ProducerException {
+  public List<Reserve> getReserveProducer(Long id) throws ProducerException{
     Producer producer = producerRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 

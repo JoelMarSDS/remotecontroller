@@ -1,12 +1,19 @@
 package com.cuscuzcomjava.remotecontroller.entity;
 
+import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
-public class Actress {
+public class Actress implements UserDetails{
 
     @Id
     @GeneratedValue
@@ -109,5 +116,52 @@ public class Actress {
 
     public void setReserves(List<Reserve> reserves) {
         this.reserves = reserves;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities(){
+        List<User> users = new ArrayList<>();
+        User localUser = new User();
+        localUser.setTypeUserEnumeration(TypeUserEnumeration.COMMON_USER);
+        users.add(localUser);
+        return users;
+    }
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthoriti(){
+////        List<String> roles = new ArrayList<>();
+////        String role = this.user.getAuthority();
+////        roles.add(role);
+////        return (Collection<? extends GrantedAuthority>) roles;
+//    }
+
+    @Override
+    public String getPassword() {
+        return this.user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.user.getLogin();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

@@ -91,16 +91,6 @@ public class ReserveController {
     return ResponseEntity.noContent().build();
   }
 
-  @GetMapping("getMostReservedActressesByProducer/{producerId}")
-  public ResponseEntity<Map<String, Long>> getMoreReservedActresses(@PathVariable Long producerId) throws Exception {
-    if (producerId != null){
-      Map<String, Long> moreReservedActresses = reserveService.getMoreReservedActresses(producerId);
-      return ResponseEntity.ok(moreReservedActresses);
-    }
-
-    return ResponseEntity.noContent().build();
-  }
-
   @PutMapping("/update/{reserveId}")
   public ResponseEntity<List<Reserve>> updateReserve(@PathVariable Long reserveId,
       @RequestBody Reserve reserve) throws Exception {

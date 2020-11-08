@@ -2,12 +2,13 @@ package com.cuscuzcomjava.remotecontroller.entity;
 
 import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
 
 @Entity
-public class User {
+public class User implements GrantedAuthority {
 
     @Id
     @GeneratedValue
@@ -75,5 +76,10 @@ public class User {
 
     public void setProcess(Producer process) {
         this.process = process;
+    }
+
+    @Override
+    public String getAuthority() {
+        return  String.valueOf(this.getTypeUserEnumeration());
     }
 }

@@ -1,17 +1,12 @@
 package com.cuscuzcomjava.remotecontroller.entity.enumeration;
 
-public enum TypeUserEnumeration {
+import org.springframework.security.core.GrantedAuthority;
 
-    ADMIN (1L),
-    COMMON_USER(2L);
+import java.util.Collection;
 
-    Long id;
+public enum TypeUserEnumeration{
 
-    public Long getId() {
-        return id;
-    }
+    ADMIN,
+    COMMON_USER;
 
-    TypeUserEnumeration(Long id) {
-        this.id = id;
-    }
 }
