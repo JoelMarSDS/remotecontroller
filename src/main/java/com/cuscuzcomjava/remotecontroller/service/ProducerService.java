@@ -65,6 +65,13 @@ public class ProducerService {
         Producer existentProducer = producerRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
+        User existentUser = userRepository.findById(existentProducer.getUser().getId()).orElse(null);
+
+        existentUser = producer.getUser();
+        existentUser.setId(existentProducer.getUser().getId());
+        existentUser.setTypeUserEnumeration(existentProducer.getUser().getTypeUserEnumeration());
+        userRepository.save(existentUser);
+        
         existentProducer = producer;
         existentProducer.setId(id);
         return producerRepository.save(existentProducer);
@@ -75,7 +82,7 @@ public class ProducerService {
             .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("producer.does.not.exists")));
 
         producerRepository.delete(producer);
-
+        userRepository.deleteById(producer.getUser().getId());
         return producer;
     }
 
@@ -84,7 +91,7 @@ public class ProducerService {
         int matchQuantity = 0;
 
         List<Actress> availableActresses = actressService.getAll().stream()
-            .filter(actress -> actress.getGenre().contains(genre))
+            .filter(actress -> actress.getGenre().toLowerCase().equals(genre.toLowerCase()))
             .filter(actress -> actressService.isAvailableAtDate(actress.getId(), date))
             .collect(Collectors.toList());
         Collections.shuffle(availableActresses);
