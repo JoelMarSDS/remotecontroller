@@ -45,6 +45,7 @@ public class User {
         this.login = login;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

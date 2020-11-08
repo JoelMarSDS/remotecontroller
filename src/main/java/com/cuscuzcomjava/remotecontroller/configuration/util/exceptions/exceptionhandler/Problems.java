@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Problems {
 
-//    private Integer status;
+    private Integer status;
     private LocalDateTime timestamp;
     private String userMessage;
 //    private String detail;
@@ -27,5 +27,13 @@ public class Problems {
 
     public void setUserMessage(String userMessage) {
         this.userMessage = userMessage;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
