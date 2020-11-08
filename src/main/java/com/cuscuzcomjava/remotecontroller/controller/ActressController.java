@@ -116,10 +116,10 @@ public class ActressController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Actress> deleteActress(@PathParam("deleteActressId") Long deleteActressId) throws
+    public ResponseEntity<Actress> deleteActress(@PathParam("id") Long id) throws
         EntityNotFoundException, Exception {
-        if (deleteActressId != null) {
-            Actress actress = actressService.delete(deleteActressId);
+        if (id != null) {
+            Actress actress = actressService.delete(id);
             return ResponseEntity.ok(actress);
         }
         return ResponseEntity.notFound().build();
