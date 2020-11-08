@@ -36,10 +36,26 @@ public class ReserveService {
   public Reserve saveReserve(Reserve reserve, Long actressId) throws ConflictException {
     Actress actress = actressRepository.findById(actressId)
         .orElseThrow(() -> new ConflictException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists")));
+    Producer producer = producerRepository.findById(reserve.getProducer().getId())
+            .orElseThrow(() -> new ConflictException(PropertiesSourceMessange.getMessageSource(
+                "producer.does.not.exists")));
+
+
+    if(!actress.getStatus()){
+      throw new ConflictException(PropertiesSourceMessange.getMessageSource("actress.inactive"));
+    }
+
+    for (Reserve auxReserve : reserveRepository.findByProducer(producer)) {
+      if (auxReserve.getReserveDate().equals(reserve.getReserveDate())
+          && auxReserve.getActress().getId().equals(reserve.getActress().getId())){
+            throw new ConflictException(PropertiesSourceMessange.getMessageSource("reserve.already.exists"));
+      }
+    }
 
     reserve.setActress(actress);
-
-    return reserveRepository.save(reserve);
+    reserveRepository.save(reserve);
+    return reserveRepository.getOne(reserve.getId());//Vou tentar comer algo, vê se assim retorna
+    // os valores do producer.
   }
 
   public List<Reserve> getListReserve() {
