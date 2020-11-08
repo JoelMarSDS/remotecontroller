@@ -161,5 +161,5 @@ Recurso para retornar datas reservadas por um produtor.
 ## Agradecimentos:
 Nosso grupo trabalhou arduamente para resolução do desafio, desafio este que só fomos capazes de desenvolver graças a imersão Accademia Accenture. 
 Aprendemos neste desafio como aplicar, gerir e desenvolver um projeto em equipe, somando forças para atingir nosso objetivo em comum.
-Então nossos agradecimentos ficam aqui registrados à toda equipe Gama Academy + Accenture e gostariámos de complementar que o programa cumpriu com o objetivo proposto de treinar pessoas e prepará-las para o mundo "coder", transformando nossa carreira dentro da Accenture. A melhor empresa multinacional de consultoria de gestão, tecnologia da informação e outsourcing do mundo. 
+Então nossos agradecimentos ficam aqui registrados à toda equipe Gama Academy, em especial ao Professor Rafael Pazini [@Rflpazini] + Accenture e gostariámos de complementar que o programa cumpriu com o objetivo proposto de treinar pessoas e prepará-las para o mundo "coder", transformando nossa carreira dentro da Accenture. A melhor empresa multinacional de consultoria de gestão, tecnologia da informação e outsourcing do mundo. 
 Tivemos realmente um treinamento intenso e com muito aprendizado e oportunidade de desenvolvimento, fica aqui então registrado nossos mais sinceros agradecimentos! GRATIDÃO :purple_heart:
