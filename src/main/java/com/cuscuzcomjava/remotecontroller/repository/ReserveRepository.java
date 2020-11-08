@@ -11,6 +11,5 @@ import java.util.List;
 @Repository
 public interface ReserveRepository extends JpaRepository<Reserve,Long> {
   List<Reserve> findByActress(Actress actress);
-
   List<Reserve> findByProducer(Producer producerId);
 }
