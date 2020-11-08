@@ -71,12 +71,7 @@ Para iniciar a API será necessário ter em sua máquina instalado a versão JDK
 ``
 https://www.oracle.com/java/technologies/javase-jdk11-downloads.html``
 
-## Deploy:
-Como solicitado no projeto, o deploy será feito via Azure DevOps e está disponível no seguinte link:
 
-```
-Belo link
-```
 ## Methods:
 
 #### ActressController
