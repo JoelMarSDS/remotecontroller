@@ -1,13 +1,16 @@
 package com.cuscuzcomjava.remotecontroller.controller;
 
-
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.ConflictException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
+import com.cuscuzcomjava.remotecontroller.entity.Actress;
 import com.cuscuzcomjava.remotecontroller.entity.Producer;
 import com.cuscuzcomjava.remotecontroller.service.ProducerService;
 import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
 import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -64,6 +68,16 @@ public class ProducerController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getCast")
+    public ResponseEntity<List<Actress>> getCast(
+        @RequestParam int quantity,
+        @RequestParam String genre,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+        @RequestParam double budget)
+    {
+        return ResponseEntity.ok(producerService.getCast(quantity, genre, date, budget));
     }
 
 }

@@ -4,10 +4,12 @@ import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customex
 import com.cuscuzcomjava.remotecontroller.configuration.util.exceptions.customexception.EntityNotFoundException;
 import com.cuscuzcomjava.remotecontroller.configuration.util.messageproperties.PropertiesSourceMessange;
 import com.cuscuzcomjava.remotecontroller.entity.Actress;
+import com.cuscuzcomjava.remotecontroller.entity.Reserve;
 import com.cuscuzcomjava.remotecontroller.entity.User;
 import com.cuscuzcomjava.remotecontroller.entity.enumeration.TypeUserEnumeration;
 import com.cuscuzcomjava.remotecontroller.repository.ActressRepository;
 import com.cuscuzcomjava.remotecontroller.repository.UserRepository;
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +26,10 @@ public class ActressService {
     @Autowired
     private UserRepository userRepository;
 
-    public Actress saveActress(Actress actress) throws ConflictException {
+    @Autowired
+    private ReserveService reserveService;
+
+    public Actress save(Actress actress) throws ConflictException {
         User user = userRepository.findByLogin(actress.getUser().getLogin());
         if (user != null){
             throw new ConflictException(PropertiesSourceMessange.getMessageSource("actress.already.exists"));
@@ -38,11 +43,11 @@ public class ActressService {
 
     }
 
-    public List<Actress> getListActress() {
+    public List<Actress> getAll() {
         return actressRepository.findAll();
     }
 
-    public Actress updateActress (Actress actress, Long id) throws ActivationException {
+    public Actress update(Actress actress, Long id) throws ActivationException {
         Actress existentActress = actressRepository.findById(id).orElse(null);
 
         if (existentActress == null) {
@@ -60,7 +65,7 @@ public class ActressService {
                 "actress.does.not.exists")));
     }
 
-    public Actress deleteActress(Long id) throws EntityNotFoundException {
+    public Actress delete(Long id) throws EntityNotFoundException {
         Actress actress = actressRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists")));
 
@@ -68,12 +73,12 @@ public class ActressService {
         return actress;
     }
 
-    public List<Actress> getActressByStatus(boolean actressStatus) {
+    public List<Actress> getByStatus(boolean actressStatus) {
         return actressRepository.findActressByStatus(actressStatus);
     }
 
-    public Map<Integer, Set<String>> getMostRelevantActresses() {
-        List<Actress> actressesList = this.getListActress();
+    public Map<Integer, Set<String>> getMostRelevant() {
+        List<Actress> actressesList = this.getAll();
 
         if (actressesList.isEmpty()){
             return null;
@@ -97,8 +102,8 @@ public class ActressService {
         return actressesOrdered;
     }
 
-    public Map<Integer, Set<String>> getLessRelevantActresses() {
-        List<Actress> actressesList = this.getListActress();
+    public Map<Integer, Set<String>> getLessRelevant() {
+        List<Actress> actressesList = this.getAll();
 
         if (actressesList.isEmpty()){
             return null;
@@ -121,8 +126,8 @@ public class ActressService {
         return actressesOrdered;
     }
 
-    public Map<Double, Set<String>> getMostExpensiveActresses() {
-        List<Actress> actressesList = this.getListActress();
+    public Map<Double, Set<String>> getMostExpensive() {
+        List<Actress> actressesList = this.getAll();
 
         if (actressesList.isEmpty()){
             return null;
@@ -146,8 +151,8 @@ public class ActressService {
         return actressesOrdered;
     }
 
-    public Map<Double, Set<String>> getLessExpensiveActresses() {
-        List<Actress> actressesList = this.getListActress();
+    public Map<Double, Set<String>> getLessExpensive() {
+        List<Actress> actressesList = this.getAll();
 
         if (actressesList.isEmpty()){
             return null;
@@ -168,5 +173,23 @@ public class ActressService {
                 .sorted(Map.Entry.<Double, Set<String>>comparingByKey()).forEachOrdered(e -> actressesOrdered.put(e.getKey(), e.getValue()));
 
         return actressesOrdered;
+    }
+
+    public boolean isAvailableAtDate(Long id, LocalDate date) {
+        List<Reserve> reserves = null;
+        try {
+            reserves = reserveService.getReserveActress(id);
+        } catch (ActivationException e) {
+            System.out.println("Atriz não encontrada, por favor informe um usuário existente.");
+            return false;
+        }
+
+        for (Reserve reserve : reserves) {
+            if (reserve.getReserveDate().isEqual(date)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
