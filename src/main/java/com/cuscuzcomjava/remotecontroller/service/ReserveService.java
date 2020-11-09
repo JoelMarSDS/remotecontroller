@@ -33,29 +33,30 @@ public class ReserveService {
   @Autowired
   private ActressRepository actressRepository;
 
-  public Reserve saveReserve(Reserve reserve, Long actressId) throws ConflictException {
+  @Autowired
+  private ActressService actressService;
+
+  public Reserve saveReserve(Reserve reserve, Long actressId)
+      throws ConflictException, ActivationException {
     Actress actress = actressRepository.findById(actressId)
         .orElseThrow(() -> new ConflictException(PropertiesSourceMessange.getMessageSource("actress.does.not.exists")));
     Producer producer = producerRepository.findById(reserve.getProducer().getId())
             .orElseThrow(() -> new ConflictException(PropertiesSourceMessange.getMessageSource(
                 "producer.does.not.exists")));
 
-
     if(!actress.getStatus()){
       throw new ConflictException(PropertiesSourceMessange.getMessageSource("actress.inactive"));
     }
 
-    for (Reserve auxReserve : reserveRepository.findByProducer(producer)) {
-      if (auxReserve.getReserveDate().equals(reserve.getReserveDate())
-          && auxReserve.getActress().getId().equals(reserve.getActress().getId())){
-            throw new ConflictException(PropertiesSourceMessange.getMessageSource("reserve.already.exists"));
+    for (Reserve forReserve : reserveRepository.findByActress(actressService.getById(actressId))) {
+      if (forReserve.getReserveDate().equals(reserve.getReserveDate())) {
+        throw new ConflictException(PropertiesSourceMessange.getMessageSource("reserve.already.exists"));
       }
     }
 
     reserve.setActress(actress);
-    reserveRepository.save(reserve);
-    return reserveRepository.getOne(reserve.getId());//Vou tentar comer algo, vê se assim retorna
-    // os valores do producer.
+    reserve.setProducer(producer);
+    return reserveRepository.save(reserve);
   }
 
   public List<Reserve> getListReserve() {

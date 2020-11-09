@@ -34,7 +34,7 @@ public class ReserveController {
       @PathVariable Long actressId) throws ConflictException, Exception {
     if (reserve != null) {
       Reserve saveReserve = reserveService.saveReserve(reserve, actressId);
-      URI uri = URI.create(String.format("/reserve/create/%d",reserve.getId()));
+      URI uri = URI.create(String.format("/reserve/save/%d",reserve.getId()));
       return ResponseEntity.created(uri).body(reserve);
     }
 
