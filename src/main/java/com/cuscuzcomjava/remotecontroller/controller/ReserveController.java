@@ -113,7 +113,7 @@ public class ReserveController {
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity<List<Reserve>> deleteReserve(@RequestParam("reserveId") Long reserveId) throws Exception{
+  public ResponseEntity<List<Reserve>> deleteReserve(@RequestParam("id") Long reserveId) throws Exception{
     if (reserveId != null){
       List<Reserve> reserves = reserveService.deleteReserve(reserveId);
       return ResponseEntity.ok(reserves);
