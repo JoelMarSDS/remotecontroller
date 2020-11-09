@@ -15,146 +15,200 @@
  
 
 ## Descrição do projeto :clapper:
-> Status do Projeto: <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=RED&style=for-the-badge"/>
 
 :pushpin: Desenvolvemos um sistema de controle de habilidades e salários de uma emissora de TV, com as seguintes funcionalidades:
 
 :heavy_check_mark: Cadastro de novo perfil de usuário (ator/atriz);
 
-:heavy_check_mark: Login e logout admin (produtor) e de usuário (ator/atriz); (WIP)
-
-:heavy_check_mark: Sistema de busca na qual um admin (produtor) pode visualizar as reservas que realizou;
+ Login e logout admin (produtor) e de usuário (ator/atriz); (WIP)
+ 
+:heavy_check_mark: Busca na qual um admin (produtor) pode colocar o número de profissionais que precisa, o gênero de sua obra, a data na qual precisará iniciar as gravações e o orçamento máximo, e receber uma indicação de quais atores e atrizes contratar que se encaixem nos requisitos
 
 :heavy_check_mark: Possibilidade de reservar a data de um ator ou atriz e exibição de status;
 
-:heavy_check_mark: Visão do usuário (ator/atriz) mostrando suas datas já reservadas;
+:heavy_check_mark: Filtro por status e classificação por relevância e preço;
 
-:heavy_check_mark: Dashboard de Admin (produtor) mostrando o número de reservas realizadas até o momento, datas com mais
-reservas e atores/atrizes mais reservados.
+:heavy_check_mark: Alguns outros filtros úteis;
 
 
 ## API :key:
 
-:heavy_check_mark: Utilizamos o spring boot com a seguintes depêndencias: Spring Data JPA, Spring Security, Spring Web.
+:heavy_check_mark: Spring boot com a seguintes dependências: Spring Data JPA, Spring Security, Spring Web.
 
-:heavy_check_mark: Utilizamos o banco de dados H2.
+:heavy_check_mark: Banco de dados: H2.
 
-:heavy_check_mark: Utilizamos como ferramenta de gerenciamento de dependencia de projeto o Gradle.
+:heavy_check_mark: Ferramenta de gerenciamento de dependência de projeto: Gradle.
 
-:heavy_check_mark: Para os tratamentos de exceções foi decidido usar uma abordagem com Spring Handler. Foi inserido também uma customização para retornar o status https devido para o momento do erro.
-
-:heavy_check_mark: Na carência de uma equipe dedicada aos tratamento de erros foram feitos testes de funcionalidades sem se aprofundar no tópico.
-
+:heavy_check_mark: Para os tratamentos de exceções foi decidido usar uma abordagem centralizada. Foi inserido também uma customização para retornar o status https devido para o momento do erro.
 
 
 ## Planning :scroll:
 
-:trophy: Desmembramento e priorização de tasks.
+:trophy: Divisão e priorização de tarefas.
 
-:trophy: Durante os dias de desenvolvimento utilizamos ferramentas como github, trello, slack e zoom para para nos auxiliar.
+:trophy: Durante os dias de desenvolvimento utilizamos ferramentas como Github, Trello, Slack, XMind e Jitsi para para nos auxiliar.
 
-:trophy: Dailys todos os dias, onde discutíamos pendências, dificuldades e estratégias para as próximas tasks. Após a Daily, retornávamos para nossas tasks e quando necessário, fazíamos pair programming.
+:trophy: Encontros todos os dias, onde discutíamos pendências, dificuldades e estratégias para as próximas tarefas. Após o encontro, retornávamos para nossas atividades e quando necessário, fazíamos pair programming.
 
 :trophy: Não definimos um scrum master para semana, todos acompanhávamos o desenvolvimento do projeto.
 
-:trophy: Listagem de todas as tasks na coluna toDo, e desenvolvimento em si: Doing, Inreview e done.
 
 ## GitHub :open_file_folder:
 
-Mantivêmos a main como branch principal.
-Cada task tinha que ser feita em nova branch, após a conclusão, era aberta a pull Request e pelo menos dois membros da equipe precisavam fazer a review e aprovar o desenvolvimento, assim, podendo mergear para a branch principal.
+- [x] Mantivemos a main como branch principal.
+- [x] Cada tarefa tinha que ser feita em nova branch, após a conclusão, era aberta a pull Request e um outro membro da equipe precisava aprovar, assim podendo "mergear" para a branch principal.
 
 ## Requirements:
 
-Para iniciar a API será necessário ter em sua máquina instalado a versão JDK11 e configurar as variáveis de ambiente. Para instalar e configurar sua máquina o kit JDK11 está disponível no link abaixo:
-
-``
-https://www.oracle.com/java/technologies/javase-jdk11-downloads.html``
+Para iniciar a API será necessário ter em sua máquina instalado a [versão JDK11 e configurar as variáveis de ambiente](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
 
 
-## Methods:
+## Endpoints:
 
-#### ActressController
-
+#### Atrizes
  
+Criar atriz:
 > POST `/actress/create`
+```JSON
+{
+    "name": "Nome",
+    "gender": "Gênero",
+    "price": 0,
+    "relevance": 0,
+    "genre": "Gênero que atua",
+    "status": true,
+    "user": {
+        "login": "login",
+        "password": "senha"
+    }
+}
+```
 
-Método dedicado a criação de uma atriz.
+Listar todas as atrizes:
+> GET `/actress/list`
 
-> GET `/actress/listaActress`
+Consultar dados de uma atriz pelo id:
+> GET `/actress/{id}`
 
-Método para listar atriz.
+Atualizar dados de uma atriz:
+> PUT `/actress/update/{id}`
+```JSON
+{
+    "name": "Nome",
+    "gender": "Gênero",
+    "price": 0,
+    "relevance": 0,
+    "genre": "Gênero que atua",
+    "status": true,
+    "user": {
+        "login": "login",
+        "password": "senha"
+    }
+ }
+```
 
-> GET `/actress/actressId/{byId}`
+Remover atriz:
+>DELETE `/actress/delete?id=0`
 
-Método que consulta dados de uma atriz pelo Id. 
+Filtros:
+>GET `/actress/getByStatus?status=true`
 
-> GET `/actress/actressStatus/{byStatus}`
+>GET `/actress/getMostRelevant`
 
-Método que consulta atriz usando status como parâmetro.
+>GET `/actress/getLessRelevant`
 
-##### Parameters:
+>GET `/actress/getMostExpensive`
 
-- **status**: Use 'true' para obter atrizes ativas na plataforma.
-
-##### Exemples: 
-
-` /actress/getActressesByStatus?status=false `
-
-` /actress/getActressesByStatus?status=true `
-
-> PUT `/actress/updateactress{updateactressId}` 
-
-Atualiza dado da atriz por Id. 
-
-> DELETE `/actress/deleteActress/{deleteActressId}` 
-
-Método que deleta atriz usando como paramentro de Id. 
-
-#### ProducerController 
-
-> POST `/producer/create:`
-
-Método dedicado a inserir uma produtor.
-
-
-> PUT `/producer/updateProducer/{updateProducerId}` 
-
-Atualiza dados do produtor.
+>GET `/actress/getLessExpensive`
 
 
-> DELETE `/actress/deleteActress/{deleteActressId}` 
+#### Produtores
 
-Método que deleta atriz usando como paramentro de Id. 
+Criar produtor:
+> POST `/producer/create`
+```JSON
+{
+    "name": "Nome",
+    "user": {
+        "login": "login",
+        "password": "senha"
+    }
+}
+```
 
-#### ReserveController
+Consultar dados de um produtor pelo id:
+> GET `/producer/{id}`
 
-> POST `/reserve/saveReserve/{saveReserveId}`
+Atualizar dados de uma produtor:
+> PUT `/producer/update/{id}`
+```JSON
+{
+    "name": "Nome",
+    "user": {
+        "login": "login",
+        "password": "senha"
+    }
+}
+```
 
-Método dedicado a reservar data apartir de uma ID.
+Remover produtor:
+>DELETE `/producer/delete?id=0`
 
-> GET `/reserve/listReserve` 
+Receber indicação de cast:
+>GET `/producer/getCast?quantity=0&budget=0&genre=genero&date=2020-11-09`
 
-Método que retorna lista de reservas.
+#### Reservas
 
-> GET `/reserve/listReserveActress/{reserveActressId}` 
+Criar reserva:
+>POST `/reserve/save/{idDaAtriz}`
+```JSON
+{
+    "reserveDate": "2020-11-09",
+    "producer": {
+        "id": 0
+    }
+}
+```
 
-Recurso dedicado a consultar lista de reservas das atrizes através do Id.
+Listar todas as reservas:
+>GET `/reserve/list`
 
-> GET `/reserve/listReserveProducer/{reserveProducerId}`
+Atualizar reserva:
+>PUT `/reserve/update/{idDaReserva}`
+```JSON
+{
+    "reserveDate": "2020-11-09",
+    "actress": {
+    "id": 0
+    },
+    "producer": {
+        "id": 0
+    }
+}
+```
 
-Recurso dedicado a retornar listas de reservas do produtor através do Id. 
+Deletar reserva:
+>DELETE `/reserve/delete?id=0`
 
-> GET `/reserve/countReserveProducer/{countReserveProducerId}`
+Filtros:
+>GET `/reserve/listByActress/{idDaAtriz}`
 
-Método que consulta números de reservas feitas por produtor.
+>GET `/reserve/listByProducer/{idDoProdutor}`
 
-> GET `/reserve/getMoreReservedProducerDates/{producerId}` - 
+>GET `/reserve/countByProducer/{idDoProdutor}`
 
-Recurso para retornar datas reservadas por um produtor.
+>GET `/reserve/getMostReservedDatesByProducer/{idDoProdutor}`
 
-## Agradecimentos:
-Nosso grupo trabalhou arduamente para resolução do desafio, desafio este que só fomos capazes de desenvolver graças a imersão Accademia Accenture. 
-Aprendemos neste desafio como aplicar, gerir e desenvolver um projeto em equipe, somando forças para atingir nosso objetivo em comum.
-Então nossos agradecimentos ficam aqui registrados à toda equipe Gama Academy, em especial ao Professor  [@Rflpazini ](https://github.com/Rflpazini) + Accenture e gostariámos de complementar que o programa cumpriu com o objetivo proposto de treinar pessoas e prepará-las para o mundo "coder", transformando nossa carreira dentro da Accenture. A melhor empresa multinacional de consultoria de gestão, tecnologia da informação e outsourcing do mundo. 
-Tivemos realmente um treinamento intenso e com muito aprendizado e oportunidade de desenvolvimento, fica aqui então registrado nossos mais sinceros agradecimentos! GRATIDÃO :purple_heart:
+>GET `/reserve/getMostReservedActressesByProducer/{idDoProdutor}`
+
+
+## Experiência:
+
+As maiores dificuldades foram relacionadas à modelagem, divisão de tarefas e ordem de execução das atividades.
+Precisamos remodelar o projeto e redistribuir as entregas mais de uma vez.
+
+E vimos que nossa maior produtividade e aprendizado foi utilizando pair programming.
+A troca de experiências, qualidade de código e até velocidade de desenvolvimento foram muito proveitosas com essa técnica.
+
+A equipe foi bastante agradável e unida, proporcionando sempre um ambiente leve e bem humorado, onde cada um supriu a deficiência existente no outro.
+Não fomos muito independentes, mas bastante colaborativos!    
